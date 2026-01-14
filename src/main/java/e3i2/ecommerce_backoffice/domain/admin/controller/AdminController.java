@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.*;
+
 
 import static e3i2.ecommerce_backoffice.common.util.Constants.ADMIN_SESSION_NAME;
 
@@ -109,9 +109,10 @@ public class AdminController {
     // 관리자 상세 조회
     @GetMapping("/{adminId}")
     public ResponseEntity<AdminApiResponse<SearchAdminDetailResponse>> getAdminDetail(
-            @PathVariable Long adminId
+            @PathVariable Long adminId,
+            @SessionAttribute(ADMIN_SESSION_NAME) SessionAdmin loginAdmin
     ) {
-        SearchAdminDetailResponse response = adminService.getAdminDetail(adminId);
+        SearchAdminDetailResponse response = adminService.getAdminDetail(adminId, loginAdmin);
         return ResponseEntity.status(HttpStatus.OK).body(AdminApiResponse.success(
                 "OK",
                 "관리자 상세 조회 성공",
@@ -123,9 +124,10 @@ public class AdminController {
     @PutMapping("/{adminId}")
     public ResponseEntity<AdminApiResponse<UpdateAdminResponse>> updateAdmin(
             @PathVariable Long adminId,
-            @Valid @RequestBody UpdateAdminRequest request
+            @Valid @RequestBody UpdateAdminRequest request,
+            @SessionAttribute(ADMIN_SESSION_NAME) SessionAdmin loginAdmin
     ){
-        UpdateAdminResponse response = adminService.updateAdmin(adminId, request);
+        UpdateAdminResponse response = adminService.updateAdmin(adminId, request, loginAdmin);
         return ResponseEntity.status(HttpStatus.OK).body(AdminApiResponse.success(
                 "OK",
                 "관리자 정보 수정 성공",

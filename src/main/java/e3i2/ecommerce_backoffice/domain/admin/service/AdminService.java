@@ -107,7 +107,11 @@ public class AdminService {
 
     // 관리자 상세 조회
     @Transactional(readOnly = true)
-    public SearchAdminDetailResponse getAdminDetail(Long adminId) {
+    public SearchAdminDetailResponse getAdminDetail(Long adminId, SessionAdmin loginAdmin) {
+        if (loginAdmin.getRole() != AdminRole.SUPER_ADMIN) {
+            throw new IllegalAccessError("슈퍼 관리자만 접근할 수 있습니다.");
+        }
+
         Admin admin = adminRepository.findById(adminId).orElseThrow(
                 () -> new IllegalStateException("존재하지 않는 관리자입니다.")
         );
@@ -120,7 +124,11 @@ public class AdminService {
 
     // 관리자 정보 수정
     @Transactional
-    public UpdateAdminResponse updateAdmin(Long adminId, @Valid UpdateAdminRequest request) {
+    public UpdateAdminResponse updateAdmin(Long adminId, @Valid UpdateAdminRequest request, SessionAdmin loginAdmin) {
+        if (loginAdmin.getRole() != AdminRole.SUPER_ADMIN) {
+            throw new IllegalAccessError("슈퍼 관리자만 접근할 수 있습니다.");
+        }
+
         Admin admin = adminRepository.findById(adminId).orElseThrow(
                 () -> new IllegalStateException("존재하지 않는 관리자입니다.")
         );
@@ -137,7 +145,6 @@ public class AdminService {
         }
 
         admin.update(request.getAdminName(), request.getEmail(), request.getPhone());
-        //flush
         adminRepository.flush();
 
         return new UpdateAdminResponse(admin);
