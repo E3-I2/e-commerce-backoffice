@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
     private final AdminService adminService;
 
+    // 내 프로필 조회
     @GetMapping("/me")
     public ResponseEntity<GetMyProfileResponse> getMyProfile(HttpSession session) {
         Long adminId = (Long) session.getAttribute("adminId");
@@ -24,6 +25,7 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.OK).body(adminService.getMyProfile(adminId));
     }
 
+    // 내 프로필 수정
     @PutMapping("/me/profile")
     public ResponseEntity<UpdateMyProfileResponse> updateMyProfile(@Valid @RequestBody UpdateMyProfileRequest request, HttpSession session) {
         Long adminId = (Long) session.getAttribute("adminId");
@@ -33,6 +35,7 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.OK).body(adminService.updateMyProfile(request, adminId));
     }
 
+    // 내 비밀번호 변경
     @PutMapping("/me/password")
     public ResponseEntity<Void> changeMyPassword(ChangeMyPasswordRequest request, HttpSession session) {
         Long adminId = (Long) session.getAttribute("adminId");
