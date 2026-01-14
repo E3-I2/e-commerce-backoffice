@@ -74,7 +74,7 @@ public class Admin extends Base {
         deletedAt = null;
     }
 
-    public void approve() {
+    public void accept() {
         if (this.status != AdminStatus.WAIT) {
             throw new IllegalStateException("해당 계정은 승인 대기 상태가 아닙니다.");
         }

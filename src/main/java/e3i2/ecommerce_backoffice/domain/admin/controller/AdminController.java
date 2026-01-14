@@ -93,4 +93,20 @@ public class AdminController {
                 )
         );
     }
+
+    // 관리자 상세 조회
+    @GetMapping("/{adminId}")
+    public ResponseEntity<AdminApiResponse<SearchAdminDetailResponse>> getAdminDetail(
+            @PathVariable Long adminId
+    ) {
+        SearchAdminDetailResponse response = adminService.getAdminDetail(adminId);
+        return ResponseEntity.status(HttpStatus.OK).body(AdminApiResponse.success(
+                "OK",
+                "관리자 상세 조회 성공",
+                response
+        ));
+    }
+
+
+
 }

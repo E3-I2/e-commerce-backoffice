@@ -79,7 +79,7 @@ public class AdminService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 관리자입니다."));
 
         //상태 변경
-        admin.approve();
+        admin.accept();
 
         return new ApproveAdminResponse(admin);
     }
@@ -101,6 +101,18 @@ public class AdminService {
         admin.deny(request.getDeniedReason());
 
         return new DeniedAdminResponse(admin);
+    }
+
+    // 관리자 상세 조회
+    public SearchAdminDetailResponse getAdminDetail(Long adminId) {
+        Admin admin = adminRepository.findById(adminId).orElseThrow(
+                () -> new IllegalStateException("존재하지 않는 관리자입니다.")
+        );
+
+        if (admin.getDeleted()) {
+            throw new IllegalArgumentException("삭제된 관리자입니다.");
+        }
+        return new SearchAdminDetailResponse(admin);
     }
 
 }
