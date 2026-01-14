@@ -9,7 +9,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class ApproveAdminResponse {
+public class AcceptAdminResponse {
     private final Long adminId;
     private final String adminName;
     private final String email;
@@ -26,7 +26,7 @@ public class ApproveAdminResponse {
 
     private final LocalDateTime deniedAt;
 
-    public ApproveAdminResponse(Admin admin) {
+    public AcceptAdminResponse(Admin admin) {
         this.adminId = admin.getAdminId();
         this.adminName = admin.getAdminName();
         this.email = admin.getEmail();

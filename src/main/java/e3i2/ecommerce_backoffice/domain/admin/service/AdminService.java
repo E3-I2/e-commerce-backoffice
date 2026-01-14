@@ -69,7 +69,7 @@ public class AdminService {
     }
 
     @Transactional
-    public ApproveAdminResponse approveAdmin(Long targetAdminId, SessionAdmin loginAdmin) {
+    public AcceptAdminResponse acceptAdmin(Long targetAdminId, SessionAdmin loginAdmin) {
         //슈퍼 관리자 권한 확인
         if (loginAdmin.getRole() != AdminRole.SUPER_ADMIN) {
             throw new IllegalAccessError("슈퍼 관리자만 승인/거부할 수 있습니다.");
@@ -81,7 +81,7 @@ public class AdminService {
         //상태 변경
         admin.accept();
 
-        return new ApproveAdminResponse(admin);
+        return new AcceptAdminResponse(admin);
     }
 
     @Transactional

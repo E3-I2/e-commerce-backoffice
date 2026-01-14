@@ -40,11 +40,11 @@ public class AdminController {
 
     //관리자 회원 가입 요청 승인
     @PutMapping("/{adminId}/accept")
-    public ResponseEntity<AdminApiResponse<ApproveAdminResponse>> approveAdmin(
+    public ResponseEntity<AdminApiResponse<AcceptAdminResponse>> approveAdmin(
             @PathVariable Long adminId,
             @SessionAttribute("loginAdmin") SessionAdmin loginAdmin
     ) {
-        ApproveAdminResponse response = adminService.approveAdmin(adminId, loginAdmin);
+        AcceptAdminResponse response = adminService.acceptAdmin(adminId, loginAdmin);
 
         return ResponseEntity.ok(
                 AdminApiResponse.success(
