@@ -5,7 +5,6 @@ import e3i2.ecommerce_backoffice.domain.admin.dto.*;
 import e3i2.ecommerce_backoffice.domain.admin.entity.Admin;
 import e3i2.ecommerce_backoffice.domain.admin.entity.AdminStatus;
 import e3i2.ecommerce_backoffice.domain.admin.repository.AdminRepository;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

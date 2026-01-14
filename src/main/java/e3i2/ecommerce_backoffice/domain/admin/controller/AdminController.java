@@ -15,7 +15,6 @@ import org.springframework.web.context.request.RequestAttributes;
 @RequestMapping("/api/admins")
 public class AdminController {
     private final AdminService adminService;
-    private final RequestAttributes requestAttributes;
 
     // 내 프로필 조회
     @GetMapping("/me")
