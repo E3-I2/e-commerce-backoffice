@@ -155,7 +155,7 @@ public class AdminService {
     }
 
     @Transactional
-    public Void ChangeMyPassword(ChangeMyPasswordRequest request, Long adminId) {
+    public Void changeMyPassword(ChangeMyPasswordRequest request, Long adminId) {
         Admin admin = adminRepository.findById(adminId).orElseThrow(
                 () -> new IllegalStateException("해당 관리자를 찾을 수 없습니다.")
         );
@@ -172,7 +172,7 @@ public class AdminService {
     }
 
     @Transactional
-    public void ChangeAdminRole(ChangeAdminRoleRequest request, Long adminId) {
+    public void changeAdminRole(ChangeAdminRoleRequest request, Long adminId) {
         Admin admin = adminRepository.findById(adminId).orElseThrow(
                 () -> new IllegalStateException("해당 관리자를 찾을 수 없습니다.")
         );
@@ -180,30 +180,10 @@ public class AdminService {
     }
 
     @Transactional
-    public void ChangeAdminStatus(ChangeAdminStatusRequest request, Long adminId) {
+    public void changeAdminStatus(ChangeAdminStatusRequest request, Long adminId) {
         Admin admin = adminRepository.findById(adminId).orElseThrow(
                 () -> new IllegalStateException("해당 관리자를 찾을 수 없습니다.")
         );
         admin.changeAdminStatus(request.getStatus());
-    }
-
-    public void acceptAdmin(Long adminId) {
-        Admin admin = adminRepository.findById(adminId).orElseThrow(
-                () -> new IllegalStateException("해당 관리자를 찾을 수 없습니다.")
-        );
-        if(!admin.getStatus().equals(AdminStatus.WAIT)) {
-            throw new IllegalArgumentException("승인 대기 상태가 아닙니다.");
-        }
-        admin.accept();
-    }
-
-    public void denyAdmin(AdminDenyRequest request, Long adminId) {
-        Admin admin = adminRepository.findById(adminId).orElseThrow(
-                () -> new IllegalStateException("해당 관리자를 찾을 수 없습니다.")
-        );
-        if(!admin.getStatus().equals(AdminStatus.WAIT)) {
-            throw new IllegalArgumentException("승인 대기 상태가 아닙니다.");
-        }
-        admin.deny(request.getReason());
     }
 }
