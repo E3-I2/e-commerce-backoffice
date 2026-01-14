@@ -134,7 +134,7 @@ public class AdminService {
         );
 
         if (admin.getDeleted()) {
-            throw new IllegalStateException("삭제한 관리자는 수정할 수 없습니다.");
+            throw new IllegalStateException("삭제된 관리자는 수정할 수 없습니다.");
         }
 
         // 이메일 중복 체크(본인 제외)
@@ -148,6 +148,25 @@ public class AdminService {
         adminRepository.flush();
 
         return new UpdateAdminResponse(admin);
+    }
+
+    // 관리자 삭제
+    @Transactional
+    public void deleteAdmin(Long adminId, SessionAdmin loginAdmin) {
+        if (loginAdmin.getRole() != AdminRole.SUPER_ADMIN) {
+            throw new IllegalAccessError("슈퍼 관리자만 접근할 수 있습니다.");
+        }
+        //삭제되지 않은 관리자만 조회
+        Admin admin = adminRepository.findByAdminIdAndDeletedFalse(adminId).orElseThrow(
+                () -> new IllegalStateException("존재하지 않는 관리자입니다.")
+        );
+
+        // 본인 삭제 방지
+        if (admin.getAdminId().equals(loginAdmin.getAdminId())) {
+            throw new IllegalStateException("본인 계정은 삭제할 수 없습니다.");
+        }
+
+        admin.delete();
     }
 
     @Transactional(readOnly = true)

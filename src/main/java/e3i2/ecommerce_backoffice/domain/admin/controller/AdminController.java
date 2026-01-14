@@ -135,6 +135,24 @@ public class AdminController {
         ));
     }
 
+    // 관리자 삭제
+    @DeleteMapping("/{adminId}")
+    public ResponseEntity<AdminApiResponse<Void>> deleteAdmin(
+            @PathVariable Long adminId,
+            @SessionAttribute(ADMIN_SESSION_NAME) SessionAdmin loginAdmin
+    ){
+        adminService.deleteAdmin(adminId, loginAdmin);
+
+        return ResponseEntity.status(HttpStatus.OK).body(AdminApiResponse.success(
+                "OK",
+                "사용자가 삭제되었습니다.",
+                null
+        ));
+    }
+
+
+
+
     // 내 프로필 조회
     @GetMapping("/me")
     public ResponseEntity<GetMyProfileResponse> getMyProfile(HttpSession session) {
