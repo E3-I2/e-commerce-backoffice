@@ -70,10 +70,19 @@ public class AdminService {
         return null;
     }
 
+    @Transactional
     public void ChangeAdminRole(ChangeAdminRoleRequest request, Long adminId) {
         Admin admin = adminRepository.findById(adminId).orElseThrow(
                 () -> new IllegalStateException("해당 관리자를 찾을 수 없습니다.")
         );
         admin.changeAdminRole(request.getRole());
+    }
+
+    @Transactional
+    public void ChangeAdminStatus(ChangeAdminStatusRequest request, Long adminId) {
+        Admin admin = adminRepository.findById(adminId).orElseThrow(
+                () -> new IllegalStateException("해당 관리자를 찾을 수 없습니다.")
+        );
+        admin.changeAdminStatus(request.getStatus());
     }
 }

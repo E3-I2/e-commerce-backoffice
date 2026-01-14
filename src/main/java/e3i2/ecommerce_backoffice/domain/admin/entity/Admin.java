@@ -86,6 +86,10 @@ public class Admin extends Base {
     public void changeAdminRole(AdminRole role) {
         this.role = role;
     }
+
+    public void changeAdminStatus(AdminStatus status) {
+        this.status = status;
+    }
 }
 
 
