@@ -1,6 +1,7 @@
 package e3i2.ecommerce_backoffice.domain.admin.entity;
 
 import e3i2.ecommerce_backoffice.common.entity.Base;
+import e3i2.ecommerce_backoffice.domain.admin.dto.ChangeAdminRoleRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -80,6 +81,10 @@ public class Admin extends Base {
 
     public void changePassword(String encodedPassword) {
         this.password = encodedPassword;
+    }
+
+    public void changeAdminRole(AdminRole role) {
+        this.role = role;
     }
 }
 

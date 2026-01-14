@@ -1,12 +1,10 @@
 package e3i2.ecommerce_backoffice.domain.admin.service;
 
 import e3i2.ecommerce_backoffice.common.config.PasswordEncoder;
-import e3i2.ecommerce_backoffice.domain.admin.dto.ChangeMyPasswordRequest;
-import e3i2.ecommerce_backoffice.domain.admin.dto.GetMyProfileResponse;
-import e3i2.ecommerce_backoffice.domain.admin.dto.UpdateMyProfileRequest;
-import e3i2.ecommerce_backoffice.domain.admin.dto.UpdateMyProfileResponse;
+import e3i2.ecommerce_backoffice.domain.admin.dto.*;
 import e3i2.ecommerce_backoffice.domain.admin.entity.Admin;
 import e3i2.ecommerce_backoffice.domain.admin.repository.AdminRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,5 +68,12 @@ public class AdminService {
         String encodedPassword = passwordEncoder.encode(request.getNewPassword());
         admin.changePassword(encodedPassword);
         return null;
+    }
+
+    public void ChangeAdminRole(ChangeAdminRoleRequest request, Long adminId) {
+        Admin admin = adminRepository.findById(adminId).orElseThrow(
+                () -> new IllegalStateException("해당 관리자를 찾을 수 없습니다.")
+        );
+        admin.changeAdminRole(request.getRole());
     }
 }

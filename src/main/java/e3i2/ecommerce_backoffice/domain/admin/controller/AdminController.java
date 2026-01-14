@@ -45,4 +45,12 @@ public class AdminController {
         adminService.ChangeMyPassword(request, adminId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
+    @PutMapping("/{adminId}/role")
+    public void changeAdminRole(@PathVariable Long adminId, @Valid @RequestBody ChangeAdminRoleRequest request, HttpSession session) {
+        if (session.getAttribute("adminId") == null) {
+            throw new IllegalStateException("로그인이 필요합니다.");
+        }
+        adminService.ChangeAdminRole(request, adminId);
+    }
 }
