@@ -44,7 +44,6 @@ public class Admin extends Base {
     private Boolean deleted;
     private LocalDateTime deletedAt;
 
-    @Column(nullable = false)
     private String deniedReason;  // 거부 이유
     private LocalDateTime deniedAt;  // 거부된 시간
 
