@@ -77,6 +77,10 @@ public class Admin extends Base {
         this.email = this.email;
         this.phone = this.phone;
     }
+
+    public void changePassword(String encodedPassword) {
+        this.password = encodedPassword;
+    }
 }
 
 

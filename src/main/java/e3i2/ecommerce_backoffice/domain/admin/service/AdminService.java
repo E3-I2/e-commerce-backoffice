@@ -1,5 +1,7 @@
 package e3i2.ecommerce_backoffice.domain.admin.service;
 
+import e3i2.ecommerce_backoffice.common.config.PasswordEncoder;
+import e3i2.ecommerce_backoffice.domain.admin.dto.ChangeMyPasswordRequest;
 import e3i2.ecommerce_backoffice.domain.admin.dto.GetMyProfileResponse;
 import e3i2.ecommerce_backoffice.domain.admin.dto.UpdateMyProfileRequest;
 import e3i2.ecommerce_backoffice.domain.admin.dto.UpdateMyProfileResponse;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AdminService {
     private final AdminRepository adminRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
     public GetMyProfileResponse getMyProfile(Long adminId) {
@@ -50,5 +53,22 @@ public class AdminService {
                 admin.getEmail(),
                 admin.getPhone()
         );
+    }
+
+    @Transactional
+    public Void ChangeMyPassword(ChangeMyPasswordRequest request, Long adminId) {
+        Admin admin = adminRepository.findById(adminId).orElseThrow(
+                () -> new IllegalStateException("해당 관리자를 찾을 수 없습니다.")
+        );
+        if (!passwordEncoder.matches(request.getCurrentPassword(), admin.getPassword())) {
+            throw new IllegalArgumentException("현재 비밀번호가 일치하지 않습니다.");
+        }
+        if (passwordEncoder.matches(request.getNewPassword(), admin.getPassword())) {
+            throw new IllegalArgumentException("새 비밀번호가 기존 비밀번호와 같습니다.");
+        }
+
+        String encodedPassword = passwordEncoder.encode(request.getNewPassword());
+        admin.changePassword(encodedPassword);
+        return null;
     }
 }

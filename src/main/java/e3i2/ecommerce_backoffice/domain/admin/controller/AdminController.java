@@ -1,8 +1,6 @@
 package e3i2.ecommerce_backoffice.domain.admin.controller;
 
-import e3i2.ecommerce_backoffice.domain.admin.dto.GetMyProfileResponse;
-import e3i2.ecommerce_backoffice.domain.admin.dto.UpdateMyProfileRequest;
-import e3i2.ecommerce_backoffice.domain.admin.dto.UpdateMyProfileResponse;
+import e3i2.ecommerce_backoffice.domain.admin.dto.*;
 import e3i2.ecommerce_backoffice.domain.admin.service.AdminService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -26,13 +24,22 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.OK).body(adminService.getMyProfile(adminId));
     }
 
-    @PutMapping("/me")
+    @PutMapping("/me/profile")
     public ResponseEntity<UpdateMyProfileResponse> updateMyProfile(@Valid @RequestBody UpdateMyProfileRequest request, HttpSession session) {
         Long adminId = (Long) session.getAttribute("adminId");
         if (adminId == null) {
             throw new IllegalStateException("로그인이 필요합니다.");
         }
-
         return ResponseEntity.status(HttpStatus.OK).body(adminService.updateMyProfile(request, adminId));
+    }
+
+    @PutMapping("/me/password")
+    public ResponseEntity<Void> changeMyPassword(ChangeMyPasswordRequest request, HttpSession session) {
+        Long adminId = (Long) session.getAttribute("adminId");
+        if (adminId == null) {
+            throw new IllegalStateException("로그인이 필요합니다.");
+        }
+        adminService.ChangeMyPassword(request, adminId);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
