@@ -180,39 +180,45 @@ public class AdminController {
 
     // 내 프로필 조회
     @GetMapping("/me")
-    public ResponseEntity<GetMyProfileResponse> getMyProfile(HttpSession session) {
-        Long adminId = (Long) session.getAttribute(ADMIN_SESSION_NAME);
-        if (adminId == null) {
+    public ResponseEntity<GetMyProfileResponse> getMyProfile(
+            @SessionAttribute(ADMIN_SESSION_NAME) SessionAdmin loginAdmin) {
+        if (loginAdmin == null) {
             throw new IllegalStateException("로그인이 필요합니다.");
         }
-        return ResponseEntity.status(HttpStatus.OK).body(adminService.getMyProfile(adminId));
+        return ResponseEntity.status(HttpStatus.OK).body(adminService.getMyProfile(loginAdmin.getAdminId()));
     }
 
     // 내 프로필 수정
     @PutMapping("/me/profile")
-    public ResponseEntity<UpdateMyProfileResponse> updateMyProfile(@Valid @RequestBody UpdateMyProfileRequest request, HttpSession session) {
-        Long adminId = (Long) session.getAttribute(ADMIN_SESSION_NAME);
-        if (adminId == null) {
+    public ResponseEntity<UpdateMyProfileResponse> updateMyProfile(
+            @Valid @RequestBody UpdateMyProfileRequest request,
+            @SessionAttribute(ADMIN_SESSION_NAME) SessionAdmin loginAdmin) {
+
+        if (loginAdmin == null) {
             throw new IllegalStateException("로그인이 필요합니다.");
         }
-        return ResponseEntity.status(HttpStatus.OK).body(adminService.updateMyProfile(request, adminId));
+        return ResponseEntity.status(HttpStatus.OK).body(adminService.updateMyProfile(request, loginAdmin.getAdminId()));
     }
 
     // 내 비밀번호 변경
     @PutMapping("/me/password")
-    public ResponseEntity<Void> changeMyPassword(@Valid @RequestBody ChangeMyPasswordRequest request, HttpSession session) {
-        Long adminId = (Long) session.getAttribute(ADMIN_SESSION_NAME);
-        if (adminId == null) {
+    public ResponseEntity<Void> changeMyPassword(
+            @Valid @RequestBody ChangeMyPasswordRequest request,
+            @SessionAttribute(ADMIN_SESSION_NAME) SessionAdmin loginAdmin) {
+        if (loginAdmin == null) {
             throw new IllegalStateException("로그인이 필요합니다.");
         }
-        adminService.changeMyPassword(request, adminId);
+        adminService.changeMyPassword(request, loginAdmin.getAdminId());
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     // 관리자 역할 변경
     @PutMapping("/{adminId}/role")
-    public void changeAdminRole(@PathVariable Long adminId, @Valid @RequestBody ChangeAdminRoleRequest request, HttpSession session) {
-        if (session.getAttribute(ADMIN_SESSION_NAME) == null) {
+    public void changeAdminRole(
+            @PathVariable Long adminId,
+            @RequestBody ChangeAdminRoleRequest request,
+            @SessionAttribute(ADMIN_SESSION_NAME) SessionAdmin loginAdmin) {
+        if (loginAdmin == null) {
             throw new IllegalStateException("로그인이 필요합니다.");
         }
         adminService.changeAdminRole(request, adminId);
@@ -220,8 +226,10 @@ public class AdminController {
 
     // 관리자 상태 변경
     @PutMapping("/{adminId}/status")
-    public void changeAdminStatus(@PathVariable Long adminId, @Valid @RequestBody ChangeAdminStatusRequest request, HttpSession session) {
-        if (session.getAttribute(ADMIN_SESSION_NAME) == null) {
+    public void changeAdminStatus(
+            @PathVariable Long adminId, @RequestBody ChangeAdminStatusRequest request,
+            @SessionAttribute(ADMIN_SESSION_NAME) SessionAdmin loginAdmin) {
+        if (loginAdmin == null) {
             throw new IllegalStateException("로그인이 필요합니다.");
         }
         adminService.changeAdminStatus(request, adminId);
