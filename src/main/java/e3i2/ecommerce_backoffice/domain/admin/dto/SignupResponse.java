@@ -1,5 +1,6 @@
 package e3i2.ecommerce_backoffice.domain.admin.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import e3i2.ecommerce_backoffice.domain.admin.entity.AdminRole;
 import e3i2.ecommerce_backoffice.domain.admin.entity.AdminStatus;
 import lombok.Getter;
@@ -13,6 +14,8 @@ public class SignupResponse {
     private final String email;
     private final String phone;
     private final AdminRole role;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private final LocalDateTime createdAt;
     private final AdminStatus status;
 
