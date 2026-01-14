@@ -12,6 +12,10 @@ import e3i2.ecommerce_backoffice.domain.admin.entity.AdminStatus;
 import e3i2.ecommerce_backoffice.domain.admin.repository.AdminRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -103,6 +107,39 @@ public class AdminService {
         admin.deny(request.getDeniedReason());
 
         return new DeniedAdminResponse(admin);
+    }
+
+    //관리자 리스트 조회
+    @Transactional(readOnly = true)
+    public Page<SearchAdminListResponse> getAdminList(String keyword, int page, int size, String sortBy, String direction, AdminRole role, AdminStatus status, SessionAdmin loginAdmin) {
+        if (loginAdmin.getRole() != AdminRole.SUPER_ADMIN) {
+            throw new IllegalAccessError("슈퍼 관리자만 관리자 리스트 조회가 가능합니다.");
+        }
+
+        Sort sort = direction.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(page - 1, size, sort);
+
+        Page<Admin> admins = adminRepository.findAdmins(
+                (keyword == null || keyword.isBlank()) ? null : keyword,
+                role,
+                status,
+                pageable
+        );
+
+        return admins.map(a -> SearchAdminListResponse.regist(
+                a.getAdminId(),
+                a.getAdminName(),
+                a.getEmail(),
+                a.getPhone(),
+                a.getRole(),
+                a.getStatus(),
+                a.getCreatedAt(),
+                a.getAcceptedAt()
+        ));
+
     }
 
     // 관리자 상세 조회

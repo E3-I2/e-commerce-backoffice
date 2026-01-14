@@ -6,14 +6,16 @@ import e3i2.ecommerce_backoffice.domain.admin.dto.UpdateAdminRequest;
 import e3i2.ecommerce_backoffice.domain.admin.dto.UpdateAdminResponse;
 import e3i2.ecommerce_backoffice.domain.admin.dto.common.AdminApiResponse;
 import e3i2.ecommerce_backoffice.domain.admin.dto.common.SessionAdmin;
+import e3i2.ecommerce_backoffice.domain.admin.entity.AdminRole;
+import e3i2.ecommerce_backoffice.domain.admin.entity.AdminStatus;
 import e3i2.ecommerce_backoffice.domain.admin.service.AdminService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 import static e3i2.ecommerce_backoffice.common.util.Constants.ADMIN_SESSION_NAME;
 
@@ -104,6 +106,29 @@ public class AdminController {
 
         session.invalidate(); //세션 무효화 시켜 로그아웃 상태로 만듦
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    //관리자 리스트 조회
+    @GetMapping
+    public ResponseEntity<AdminApiResponse<Page<SearchAdminListResponse>>> getAdminList(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "desc") String direction,
+            @RequestParam(required = false) AdminRole role,
+            @RequestParam(required = false) AdminStatus status,
+            @SessionAttribute(ADMIN_SESSION_NAME) SessionAdmin loginAdmin
+    ){
+        Page<SearchAdminListResponse> response = adminService.getAdminList(
+                keyword, page, size, sortBy, direction, role, status, loginAdmin
+        );
+        return ResponseEntity.status(HttpStatus.OK).body(AdminApiResponse.success(
+                "OK",
+                "관리자 리스트 조회 성공",
+                response
+        ));
+
     }
 
     // 관리자 상세 조회
