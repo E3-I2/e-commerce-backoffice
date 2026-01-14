@@ -44,14 +44,19 @@ public class Admin extends Base {
     private Boolean deleted;
     private LocalDateTime deletedAt;
 
-    public static Admin regist(String email, String password, String adminName, String phone, AdminRole role, AdminStatus status) {
+    private LocalDateTime deniedAt;
+
+    @Column(nullable = false)
+    private String deniedReason;
+
+    public static Admin regist(String email, String password, String adminName, String phone, AdminRole role) {
         Admin admin = new Admin();
         admin.email = email;
         admin.password = password;
         admin.adminName = adminName;
         admin.phone = phone;
         admin.role = role;
-        admin.status = status;
+        admin.status = AdminStatus.WAIT;
         admin.deleted = false;
 
         return admin;
@@ -65,6 +70,12 @@ public class Admin extends Base {
     public void restore() {
         deleted = false;
         deletedAt = null;
+    }
+
+    public void update(String adminName, String email, String phone) {
+        this.adminName = this.adminName;
+        this.email = this.email;
+        this.phone = this.phone;
     }
 }
 
