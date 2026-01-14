@@ -5,42 +5,58 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import e3i2.ecommerce_backoffice.domain.admin.entity.Admin;
 import e3i2.ecommerce_backoffice.domain.admin.entity.AdminRole;
 import e3i2.ecommerce_backoffice.domain.admin.entity.AdminStatus;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UpdateAdminResponse {
-    private final Long adminId;
-    private final String adminName;
-    private final String email;
-    private final String phone;
-    private final AdminRole role;
-    private final AdminStatus status;
+    private Long adminId;
+    private String adminName;
+    private String email;
+    private String phone;
+    private AdminRole role;
+    private AdminStatus status;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private final LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private final LocalDateTime updatedAt;
+    private LocalDateTime updatedAt;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private final LocalDateTime acceptedAt;
+    private LocalDateTime acceptedAt;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private final LocalDateTime deniedAt;
+    private LocalDateTime deniedAt;
 
-    public UpdateAdminResponse(Admin admin) {
-        this.adminId = admin.getAdminId();
-        this.adminName = admin.getAdminName();
-        this.email = admin.getEmail();
-        this.phone = admin.getPhone();
-        this.role = admin.getRole();
-        this.status = admin.getStatus();
-        this.createdAt = admin.getCreatedAt();
-        this.updatedAt = admin.getUpdatedAt();
-        this.acceptedAt = admin.getAcceptedAt();
-        this.deniedAt = admin.getDeniedAt();
+    public static UpdateAdminResponse regist(
+            Long adminId,
+            String adminName,
+            String email,
+            String phone,
+            AdminRole role,
+            AdminStatus status,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt,
+            LocalDateTime acceptedAt,
+            LocalDateTime deniedAt
+    ) {
+        UpdateAdminResponse response = new UpdateAdminResponse();
+        response.adminId = adminId;
+        response.adminName = adminName;
+        response.email = email;
+        response.phone = phone;
+        response.role = role;
+        response.status = status;
+        response.createdAt = createdAt;
+        response.updatedAt = updatedAt;
+        response.acceptedAt = acceptedAt;
+        response.deniedAt = deniedAt;
+        return response;
     }
 
 }

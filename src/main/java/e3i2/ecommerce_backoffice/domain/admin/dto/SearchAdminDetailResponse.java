@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 
 // 관리자 상세 조회
 @Getter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SearchAdminDetailResponse {
     private Long adminId;

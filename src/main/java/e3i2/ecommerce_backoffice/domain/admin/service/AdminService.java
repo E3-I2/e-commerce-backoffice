@@ -159,7 +159,18 @@ public class AdminService {
         admin.update(request.getAdminName(), request.getEmail(), request.getPhone());
         adminRepository.flush();
 
-        return new UpdateAdminResponse(admin);
+        return UpdateAdminResponse.regist(
+                admin.getAdminId(),
+                admin.getAdminName(),
+                admin.getEmail(),
+                admin.getPhone(),
+                admin.getRole(),
+                admin.getStatus(),
+                admin.getCreatedAt(),
+                admin.getUpdatedAt(),
+                admin.getAcceptedAt(),
+                admin.getDeniedAt()
+        );
     }
 
     // 관리자 삭제
