@@ -3,6 +3,7 @@ package e3i2.ecommerce_backoffice.domain.admin.service;
 import e3i2.ecommerce_backoffice.common.config.PasswordEncoder;
 import e3i2.ecommerce_backoffice.domain.admin.dto.*;
 import e3i2.ecommerce_backoffice.domain.admin.dto.common.SessionAdmin;
+import e3i2.ecommerce_backoffice.domain.admin.dto.SearchAdminDetailResponse;
 import e3i2.ecommerce_backoffice.domain.admin.entity.Admin;
 import e3i2.ecommerce_backoffice.domain.admin.entity.AdminRole;
 import e3i2.ecommerce_backoffice.domain.admin.entity.AdminStatus;

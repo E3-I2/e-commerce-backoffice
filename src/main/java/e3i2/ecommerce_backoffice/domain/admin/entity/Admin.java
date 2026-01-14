@@ -44,12 +44,12 @@ public class Admin extends Base {
     private Boolean deleted;
     private LocalDateTime deletedAt;
 
-    private String requestMessage;
+    @Column(nullable = false)
+    private String deniedReason;  // 거부 이유
+    private LocalDateTime deniedAt;  // 거부된 시간
 
-    private LocalDateTime deniedAt;
-
-    private String deniedReason;
-
+    @Column(length = 500)
+    private String requestMessage;  // 승인대기 시 요청메세지
 
     public static Admin regist(String email, String password, String adminName, String phone, AdminRole role) {
         Admin admin = new Admin();
