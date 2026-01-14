@@ -95,6 +95,17 @@ public class AdminController {
         );
     }
 
+    //관리자 로그아웃
+    @PostMapping("/logout")
+    public ResponseEntity<AdminApiResponse<Void>> logout(@SessionAttribute(name = "loginAdmin", required = false) SessionAdmin sessionUser, HttpSession session){
+        if (sessionUser == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        session.invalidate(); //세션 무효화 시켜 로그아웃 상태로 만듦
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
     // 관리자 상세 조회
     @GetMapping("/{adminId}")
     public ResponseEntity<AdminApiResponse<SearchAdminDetailResponse>> getAdminDetail(
