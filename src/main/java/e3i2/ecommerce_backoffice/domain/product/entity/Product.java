@@ -1,7 +1,6 @@
 package e3i2.ecommerce_backoffice.domain.product.entity;
 
 import e3i2.ecommerce_backoffice.common.entity.Base;
-import e3i2.ecommerce_backoffice.domain.admin.entity.Admin;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -40,7 +39,7 @@ public class Product extends Base {
     private Boolean deleted = false;
     private LocalDateTime deletedAt;
 
-    public static Product regist(/*Admin admin,*/ String productName, ProductCategory category, Long price, Long quantity, ProductStatus status) {
+    public static Product register(/*Admin admin,*/ String productName, ProductCategory category, Long price, Long quantity, ProductStatus status) {
         Product product = new Product();
         //product.admin = admin;
         product.productName = productName;

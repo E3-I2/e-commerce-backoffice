@@ -7,28 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-/*
-{
-    "success": true,
-    "code": "CREATED",
-    "data": {
-        "name": "테스트 상품",
-        "category": "ELECTRONICS",
-        "price": 90000,
-        "stock": 10,
-        "status": "AVAILABLE",
-        "id": "P101",
-        "createdAt": "2026-01-14",
-        "createdBy": "0",
-        "createdByName": "admin",
-        "createdByEmail": "admin@sparta.com"
-    }
-}
-*/
-
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CreateProductResponse {
+public class SearchProductResponse {
     private Long id;
     private String name;
     private String category;
@@ -41,9 +22,9 @@ public class CreateProductResponse {
     //private String adminName;
     //private String adminEmail;
 
-    public static CreateProductResponse register(Long id, String name, String category, Long price, Long quantity, String status, LocalDateTime createdAt
+    public static SearchProductResponse register(Long id, String name, String category, Long price, Long quantity, String status, LocalDateTime createdAt
             /*, Long adminId, String adminName, String adminEmail*/) {
-        CreateProductResponse response = new CreateProductResponse();
+        SearchProductResponse response = new SearchProductResponse();
         response.id = id;
         response.name = name;
         response.category = category;
