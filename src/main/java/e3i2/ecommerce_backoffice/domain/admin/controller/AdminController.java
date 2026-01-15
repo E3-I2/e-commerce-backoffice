@@ -163,7 +163,7 @@ public class AdminController {
     ) {
         adminService.deleteAdmin(adminId, loginAdmin);
 
-        return ResponseEntity.status(HttpStatus.OK).body(MessageResponse.success(HttpStatus.OK.name(), MSG_DELETED_ADMIN_ACCOUNT));
+        return ResponseEntity.status(HttpStatus.OK).body(MessageResponse.success(HttpStatus.OK.name(), MSG_DELETE_ADMIN_ACCOUNT));
     }
 
     // 내 프로필 조회

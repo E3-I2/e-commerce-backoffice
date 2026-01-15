@@ -2,13 +2,14 @@ package e3i2.ecommerce_backoffice.common.util;
 
 public class Constants {
 
-    private Constants() {}
+    private Constants() {
+    }
 
     public static final String ADMIN_SESSION_NAME = "loginAdmin";
     public static final String MSG_SERVER_ERROR_OCCUR = "오류가 발생하였습니다, 잠시 후 다시 시도 바랍니다";
     public static final String MSG_LOGOUT_MSG = "로그아웃 되었습니다";
-    public static final String MSG_DELETED_ADMIN_ACCOUNT = "관리자가 삭제 되었습니다";
-    public static final String MSG_DELETED_CUSTOMER_ACCOUNT = "고객이 삭제 되었습니다";
+    public static final String MSG_DELETE_ADMIN_ACCOUNT = "관리자가 삭제 되었습니다";
+    public static final String MSG_DELETE_CUSTOMER_ACCOUNT = "고객이 삭제 되었습니다";
     public static final String MSG_CHANGE_PASSWORD_SUCCESS = "비밀번호가 성공적으로 변경 되었습니다";
     public static final String MSG_ADMIN_STATUS_NOT_WAIT = "해당 계정은 승인 대기 상태가 아닙니다";
     public static final String MSG_LOGOUT_DUPLICATED = "이미 로그아웃 된 상태입니다";
@@ -39,6 +40,17 @@ public class Constants {
     public static final String MSG_SAME_OLD_PASSWORD = "새 비밀번호가 기존 비밀번호와 같습니다";
     public static final String MSG_NOT_MATCH_PASSWORD = "현재 비밀번호와 일치하지 않습니다";
     public static final String MSG_DUPLICATED_PHONE = "이미 등록된 전화번호 입니다";
+    public static final String MSG_PRODUCT_NAME_BLANK_ERR = "상품의 이름은 필수입니다";
+    public static final String MSG_PRODUCT_CATEGORY_BLANK_ERR = "상품의 카테고리는 필수입니다";
+    public static final String MSG_PRODUCT_PRICE_BLANK_ERR = "상품의 가격은 필수입니다";
+    public static final String MSG_PRODUCT_PRICE_MINUS_ERR = "상품의 가격은 0원 이상이어야 합니다";
+    public static final String MSG_PRODUCT_PRICE_MAX_ERR = "상품의 가격이 한도를 넘었습니다";
+    public static final String MSG_PRODUCT_QUANTITY_MAX_ERR = "상품의 수량이 한도를 넘었습니다";
+    public static final String MSG_PRODUCT_STATUS_BLANK_ERR = "상품의 상태는 필수입니다";
+    public static final String MSG_PRODUCT_QUANTITY_BLANK_ERR = "상품의 수량은 필수입니다";
+    public static final String MSG_DELETE_PRODUCT = "상품이 삭제 되었습니다";
+    public static final String MSG_NOT_FOUND_PRODUCT = "존재하지 않는 상품 입니다";
+    public static final String MSG_NOT_LOGIN_ACCESS = "로그인 후 이용 가능합니다";
 }
 
 

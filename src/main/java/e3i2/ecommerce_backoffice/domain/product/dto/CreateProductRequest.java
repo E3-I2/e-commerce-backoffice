@@ -7,19 +7,21 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
+import static e3i2.ecommerce_backoffice.common.util.Constants.*;
+
 @Getter
 public class CreateProductRequest {
-    @NotBlank(message = "상품의 이름을 입력해주세요")
-    private String name;
-    @NotBlank(message = "상품의 카테고리를 입력해주세요")
+    @NotBlank(message = MSG_PRODUCT_NAME_BLANK_ERR)
+    private String productName;
+    @NotBlank(message = MSG_PRODUCT_CATEGORY_BLANK_ERR)
     private ProductCategory category;
-    @NotBlank(message = "상품의 가격을 입력해주세요")
-    @Min(value = 0, message = "상품의 가격은 0원 이상이어야 합니다")
-    @Max(value = Long.MAX_VALUE, message = "상품의 가격이 한도를 넘었습니다")
+    @NotBlank(message = MSG_PRODUCT_PRICE_BLANK_ERR)
+    @Min(value = 0, message = MSG_PRODUCT_PRICE_MINUS_ERR)
+    @Max(value = Long.MAX_VALUE, message = MSG_PRODUCT_PRICE_MAX_ERR)
     private Long price;
-    @NotBlank(message = "상품의 상태를 입력해주세요")
+    @NotBlank(message = MSG_PRODUCT_STATUS_BLANK_ERR)
     private ProductStatus status;
-    @NotBlank(message = "상품의 수량을 입력해주세요")
-    @Max(value = Long.MAX_VALUE, message = "상품의 수량이 한도를 넘었습니다")
+    @NotBlank(message = MSG_PRODUCT_QUANTITY_BLANK_ERR)
+    @Max(value = Long.MAX_VALUE, message = MSG_PRODUCT_QUANTITY_MAX_ERR)
     private Long quantity;
 }

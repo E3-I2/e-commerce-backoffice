@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static e3i2.ecommerce_backoffice.common.util.Constants.MSG_DELETED_CUSTOMER_ACCOUNT;
+import static e3i2.ecommerce_backoffice.common.util.Constants.MSG_DELETE_CUSTOMER_ACCOUNT;
 
 @RestController
 @RequiredArgsConstructor
@@ -63,6 +63,6 @@ public class CustomerController {
     @LoginSessionCheck
     public ResponseEntity<MessageResponse<Void>> delete(@PathVariable Long customerId) {
         customerService.delete(customerId);
-        return ResponseEntity.status(HttpStatus.OK).body(MessageResponse.success(HttpStatus.OK.name(), MSG_DELETED_CUSTOMER_ACCOUNT));
+        return ResponseEntity.status(HttpStatus.OK).body(MessageResponse.success(HttpStatus.OK.name(), MSG_DELETE_CUSTOMER_ACCOUNT));
     }
 }
