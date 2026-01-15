@@ -4,11 +4,14 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
+import static e3i2.ecommerce_backoffice.common.util.Constants.MSG_EMAIL_REFERENCE_ERR;
+import static e3i2.ecommerce_backoffice.common.util.Constants.MSG_PASSWORD_SIZE_ERR;
+
 @Getter
 public class LoginRequest {
-    @Email(message = "이메일 형식으로 작성해야 합니다")
+    @Email(message = MSG_EMAIL_REFERENCE_ERR)
     private String email;
 
-    @Size(min = 8, message = "비밀번호는 8자리 이상이여야 합니다")
+    @Size(min = 8, max = 20, message = MSG_PASSWORD_SIZE_ERR)
     private String password;
 }

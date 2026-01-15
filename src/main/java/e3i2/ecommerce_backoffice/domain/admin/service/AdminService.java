@@ -380,7 +380,7 @@ public class AdminService {
 
     // 관리자 역할 변경
     @Transactional
-    public ChangeAdminRoleResponse changeAdminRole(ChangeAdminRoleRequest request, Long adminId, SessionAdmin loginAdmin) {
+    public ChangeAdminRoleResponse changeAdminRole(@Valid ChangeAdminRoleRequest request, Long adminId, SessionAdmin loginAdmin) {
         if (loginAdmin.getRole() != AdminRole.SUPER_ADMIN) {
             throw new IllegalAccessError("슈퍼 관리자만 접근할 수 있습니다");
         }

@@ -104,7 +104,7 @@ public class AdminController {
 
         session.invalidate();
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(
-                MessageResponse.success(HttpStatus.NO_CONTENT.name(), LOGOUT_MSG)
+                MessageResponse.success(HttpStatus.NO_CONTENT.name(), MSG_LOGOUT_MSG)
         );
     }
 
@@ -161,7 +161,7 @@ public class AdminController {
     ) {
         adminService.deleteAdmin(adminId, loginAdmin);
 
-        return ResponseEntity.status(HttpStatus.OK).body(MessageResponse.success(HttpStatus.OK.name(), DELETED_ADMIN_ACCOUNT));
+        return ResponseEntity.status(HttpStatus.OK).body(MessageResponse.success(HttpStatus.OK.name(), MSG_DELETED_ADMIN_ACCOUNT));
     }
 
     // 내 프로필 조회
@@ -196,7 +196,7 @@ public class AdminController {
     ) {
         adminService.changeMyPassword(request, loginAdmin.getAdminId());
 
-        return ResponseEntity.status(HttpStatus.OK).body(MessageResponse.success(HttpStatus.OK.name(), CHANGE_PASSWORD_SUCCESS));
+        return ResponseEntity.status(HttpStatus.OK).body(MessageResponse.success(HttpStatus.OK.name(), MSG_CHANGE_PASSWORD_SUCCESS));
     }
 
     // 관리자 역할 변경
@@ -217,7 +217,7 @@ public class AdminController {
     @LoginSessionCheck
     public ResponseEntity<DataResponse<ChangeAdminStatusResponse>> changeAdminStatus(
             @PathVariable Long adminId,
-            @RequestBody ChangeAdminStatusRequest request,
+            @Valid @RequestBody ChangeAdminStatusRequest request,
             @SessionAttribute(value = ADMIN_SESSION_NAME) SessionAdmin loginAdmin
     ) {
         ChangeAdminStatusResponse response = adminService.changeAdminStatus(request, adminId, loginAdmin);
