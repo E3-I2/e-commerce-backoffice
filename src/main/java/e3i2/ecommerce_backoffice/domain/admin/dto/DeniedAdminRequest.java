@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @Getter
 public class DeniedAdminRequest {
-    @NotBlank(message = "거부 사유를 입력해주세요")
+    @NotBlank(message = "거부 사유는 필수값입니다")
     private String deniedReason;
 }
