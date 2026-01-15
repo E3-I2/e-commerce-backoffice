@@ -1,6 +1,7 @@
 package e3i2.ecommerce_backoffice.domain.product.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,18 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@JsonPropertyOrder({
+        "id",
+        "productName",
+        "category",
+        "price",
+        "quantity",
+        "status",
+        "createdAt",
+        "adminId",
+        "adminName",
+        "adminEmail"
+})
 public class CreateProductResponse {
     private Long id;
     private String productName;

@@ -5,12 +5,12 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
+@JsonPropertyOrder({ "success", "code", "message" })
 public class ProductApiResponse2 {
     public Boolean success;
     public String code;
     public String message;
 
-    @JsonPropertyOrder({ "success", "code", "message" })
     private static ProductApiResponse2 regist(Boolean success, String code, String message) {
         ProductApiResponse2 response = new ProductApiResponse2();
         response.success = success;
