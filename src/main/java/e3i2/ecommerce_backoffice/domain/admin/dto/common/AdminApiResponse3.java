@@ -1,8 +1,10 @@
 package e3i2.ecommerce_backoffice.domain.admin.dto.common;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 // 응답 형식 success, code, message
 @Getter
+@JsonPropertyOrder({ "success", "code", "data" })
 public class AdminApiResponse3 {
     private final boolean success;
     private final String code;

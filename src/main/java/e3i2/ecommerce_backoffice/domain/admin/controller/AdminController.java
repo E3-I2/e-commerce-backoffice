@@ -5,10 +5,7 @@ import e3i2.ecommerce_backoffice.domain.admin.dto.*;
 import e3i2.ecommerce_backoffice.domain.admin.dto.SearchAdminDetailResponse;
 import e3i2.ecommerce_backoffice.domain.admin.dto.UpdateAdminRequest;
 import e3i2.ecommerce_backoffice.domain.admin.dto.UpdateAdminResponse;
-import e3i2.ecommerce_backoffice.domain.admin.dto.common.AdminApiResponse;
-import e3i2.ecommerce_backoffice.domain.admin.dto.common.AdminApiResponse2;
-import e3i2.ecommerce_backoffice.domain.admin.dto.common.AdminApiResponse3;
-import e3i2.ecommerce_backoffice.domain.admin.dto.common.SessionAdmin;
+import e3i2.ecommerce_backoffice.domain.admin.dto.common.*;
 import e3i2.ecommerce_backoffice.domain.admin.entity.AdminRole;
 import e3i2.ecommerce_backoffice.domain.admin.entity.AdminStatus;
 import e3i2.ecommerce_backoffice.domain.admin.service.AdminService;
@@ -132,23 +129,22 @@ public class AdminController {
     //관리자 리스트 조회
     @GetMapping
     @LoginSessionCheck
-    public ResponseEntity<AdminApiResponse<Page<SearchAdminListResponse>>> getAdminList (
+    public ResponseEntity<AdminApiResponse2<AdminListDataResponse>> getAdminList (
             @RequestParam(required = false) String keyword,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "createdAt") String sortBy,
-            @RequestParam(defaultValue = "desc") String direction,
+            @RequestParam(name = "sortOrder", defaultValue = "desc") String sortOrder,
             @RequestParam(required = false) AdminRole role,
             @RequestParam(required = false) AdminStatus status,
             @SessionAttribute(ADMIN_SESSION_NAME) SessionAdmin loginAdmin
     ) {
-        Page<SearchAdminListResponse> response = adminService.getAdminList(
-                keyword, page, size, sortBy, direction, role, status, loginAdmin
+        AdminListDataResponse response = adminService.getAdminList(
+                keyword, page, size, sortBy, sortOrder, role, status, loginAdmin
         );
 
-        return ResponseEntity.status(HttpStatus.OK).body(AdminApiResponse.success(
+        return ResponseEntity.status(HttpStatus.OK).body(AdminApiResponse2.success(
                 "OK",
-                "관리자 리스트 조회 성공",
                 response
         ));
     }
@@ -156,14 +152,13 @@ public class AdminController {
     // 관리자 상세 조회
     @GetMapping("/{adminId}")
     @LoginSessionCheck
-    public ResponseEntity<AdminApiResponse<SearchAdminDetailResponse>> getAdminDetail(
+    public ResponseEntity<AdminApiResponse2<SearchAdminDetailResponse>> getAdminDetail(
             @PathVariable Long adminId,
             @SessionAttribute(value = ADMIN_SESSION_NAME, required = false) SessionAdmin loginAdmin
     ) {
         SearchAdminDetailResponse response = adminService.getAdminDetail(adminId, loginAdmin);
-        return ResponseEntity.status(HttpStatus.OK).body(AdminApiResponse.success(
+        return ResponseEntity.status(HttpStatus.OK).body(AdminApiResponse2.success(
                 "OK",
-                "관리자 상세 조회 성공",
                 response
         ));
     }
@@ -187,16 +182,15 @@ public class AdminController {
     // 관리자 삭제
     @DeleteMapping("/{adminId}")
     @LoginSessionCheck
-    public ResponseEntity<AdminApiResponse<Void>> deleteAdmin(
+    public ResponseEntity<AdminApiResponse3> deleteAdmin(
             @PathVariable Long adminId,
             @SessionAttribute(value = ADMIN_SESSION_NAME, required = false) SessionAdmin loginAdmin
     ) {
         adminService.deleteAdmin(adminId, loginAdmin);
 
-        return ResponseEntity.status(HttpStatus.OK).body(AdminApiResponse.success(
+        return ResponseEntity.status(HttpStatus.OK).body(AdminApiResponse3.success(
                 "OK",
-                "사용자가 삭제되었습니다",
-                null
+                "사용자가 삭제되었습니다"
         ));
     }
 
