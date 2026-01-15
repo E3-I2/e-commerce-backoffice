@@ -47,7 +47,7 @@ public class CustomerService {
         Customer customer = customerRepository.findByCustomerIdAndDeletedFalse(customerId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 고객입니다")
         );
-        return new GetCustomerResponse(customer.getCustomerId(), customer.getCustomerName(), customer.getEmail(), customer.getPhone(), customer.getCustomerStatus().getStatusDescription(), customer.getCreatedAt());
+        return new GetCustomerResponse(customer.getCustomerId(), customer.getCustomerName(), customer.getEmail(), customer.getPhone(), customer.getCustomerStatus().getStatusCode(), customer.getCreatedAt());
     }
 
     // 고객 정보 수정
@@ -65,7 +65,7 @@ public class CustomerService {
             throw new IllegalArgumentException("사용 불가능한 전화번호입니다");
         }
         customer.update(request.getCustomerName(), request.getEmail(), request.getPhone());
-        return new PutInfoCustomerResponse(customer.getCustomerId(), customer.getCustomerName(), customer.getEmail(), customer.getPhone(), customer.getCustomerStatus().getStatusDescription(), customer.getCreatedAt());
+        return new PutInfoCustomerResponse(customer.getCustomerId(), customer.getCustomerName(), customer.getEmail(), customer.getPhone(), customer.getCustomerStatus().getStatusCode(), customer.getCreatedAt());
 
     }
 
@@ -76,7 +76,7 @@ public class CustomerService {
                 () -> new IllegalArgumentException("존재하지 않는 고객입니다")
         );
         customer.statusChange(request.getStatus());
-        return new PutStatusCustomerResponse(customer.getCustomerId(), customer.getCustomerName(), customer.getEmail(), customer.getPhone(), customer.getCustomerStatus().getStatusDescription(), customer.getCreatedAt());
+        return new PutStatusCustomerResponse(customer.getCustomerId(), customer.getCustomerName(), customer.getEmail(), customer.getPhone(), customer.getCustomerStatus().getStatusCode(), customer.getCreatedAt());
     }
 
     // 고객 삭제
@@ -85,6 +85,9 @@ public class CustomerService {
         Customer customer = customerRepository.findById(customerId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 고객입니다")
         );
+        if(customer.getDeleted()) {
+            throw new IllegalArgumentException("존재하지 않는 고객입니다");
+        }
         customer.delete();
     }
 }
