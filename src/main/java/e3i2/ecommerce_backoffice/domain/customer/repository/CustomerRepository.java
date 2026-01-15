@@ -12,8 +12,8 @@ import java.util.Optional;
 
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
     @Query("SELECT c FROM Customer c WHERE " +
-            "(:customerName IS NULL OR c.customerName LIKE %:customerName) AND " +
-            "(:email IS NULL OR c.email LIKE %:email) AND " +
+            "(:customerName IS NULL OR (LOWER(c.customerName) LIKE CONCAT( '%', :customerName, '%'))) AND " +
+            "(:email IS NULL OR (LOWER(c.email) LIKE CONCAT( '%', :email, '%'))) AND " +
             "(:status IS NULL OR c.customerStatus = :status) AND " +
             "c.deleted = false")
     Page<Customer> findAllByFilters(@Param("customerName") String customerName, @Param("email") String email ,@Param("status")CustomerStatus status, Pageable pageable);
