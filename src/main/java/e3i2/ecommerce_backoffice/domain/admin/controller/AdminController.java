@@ -182,16 +182,15 @@ public class AdminController {
     // 관리자 삭제
     @DeleteMapping("/{adminId}")
     @LoginSessionCheck
-    public ResponseEntity<AdminApiResponse<Void>> deleteAdmin(
+    public ResponseEntity<AdminApiResponse3> deleteAdmin(
             @PathVariable Long adminId,
             @SessionAttribute(value = ADMIN_SESSION_NAME, required = false) SessionAdmin loginAdmin
     ) {
         adminService.deleteAdmin(adminId, loginAdmin);
 
-        return ResponseEntity.status(HttpStatus.OK).body(AdminApiResponse.success(
+        return ResponseEntity.status(HttpStatus.OK).body(AdminApiResponse3.success(
                 "OK",
-                "사용자가 삭제되었습니다",
-                null
+                "사용자가 삭제되었습니다"
         ));
     }
 
