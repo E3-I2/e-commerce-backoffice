@@ -165,9 +165,6 @@ public class AdminController {
             @Valid @RequestBody UpdateAdminRequest request,
             @SessionAttribute(value = ADMIN_SESSION_NAME, required = false) SessionAdmin loginAdmin
     ) {
-        if (loginAdmin == null) {
-            throw new IllegalStateException("로그인이 필요합니다.");
-        }
         UpdateAdminResponse response = adminService.updateAdmin(adminId, request, loginAdmin);
         return ResponseEntity.status(HttpStatus.OK).body(AdminApiResponse.success(
                 "OK",
