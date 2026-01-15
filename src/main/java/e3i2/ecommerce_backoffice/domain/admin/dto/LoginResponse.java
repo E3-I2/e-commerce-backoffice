@@ -1,7 +1,6 @@
 package e3i2.ecommerce_backoffice.domain.admin.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import e3i2.ecommerce_backoffice.domain.admin.dto.common.SessionAdmin;
 import e3i2.ecommerce_backoffice.domain.admin.entity.AdminRole;
 import e3i2.ecommerce_backoffice.domain.admin.entity.AdminStatus;
 import lombok.AccessLevel;

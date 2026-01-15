@@ -86,7 +86,7 @@ public class Admin extends Base {
 
     public void accept() {
         if (this.status != AdminStatus.WAIT) {
-            throw new ServiceErrorException(ErrorEnum.NOT_ADMIN_STATUS_WAIT);
+            throw new ServiceErrorException(ErrorEnum.ERR_NOT_ADMIN_STATUS_WAIT);
         }
 
         this.status = AdminStatus.ACT;

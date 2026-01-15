@@ -9,13 +9,13 @@ import static e3i2.ecommerce_backoffice.common.util.Constants.*;
 
 @Getter
 public class UpdateMyProfileRequest {
-    @NotBlank(message = MSG_ADMIN_NAME_BLANK_ERR)
+    @NotBlank(message = MSG_NAME_BLANK_ERR)
     private String adminName;
-    @Email(message = MSG_EMAIL_REFERENCE_ERR)
+    @Email(message = MSG_EMAIL_PATTERN_ERR)
     private String email;
     @Pattern(
             regexp = "^010-\\d{4}-\\d{4}$",
-            message = MSG_ADMIN_PHONE_REFERENCE_ERR
+            message = MSG_PHONE_PATTERN_ERR
     )
     private String phone;
 }

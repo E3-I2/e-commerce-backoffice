@@ -8,10 +8,10 @@ import static e3i2.ecommerce_backoffice.common.util.Constants.*;
 
 @Getter
 public class SignUpRequest {
-    @NotBlank(message = MSG_ADMIN_NAME_BLANK_ERR)
+    @NotBlank(message = MSG_NAME_BLANK_ERR)
     private String adminName;
 
-    @Email(message = MSG_EMAIL_REFERENCE_ERR)
+    @Email(message = MSG_EMAIL_PATTERN_ERR)
     private String email;
 
     @Size(min = 8, max = 20, message = MSG_PASSWORD_SIZE_ERR)
@@ -19,7 +19,7 @@ public class SignUpRequest {
 
     @Pattern(
             regexp = "^010-\\d{4}-\\d{4}$",
-            message = MSG_ADMIN_PHONE_REFERENCE_ERR
+            message = MSG_PHONE_PATTERN_ERR
     )
     private String phone;
 

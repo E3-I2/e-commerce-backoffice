@@ -1,4 +1,4 @@
-package e3i2.ecommerce_backoffice.domain.admin.dto.common;
+package e3i2.ecommerce_backoffice.common.dto.session;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import e3i2.ecommerce_backoffice.domain.admin.entity.AdminRole;

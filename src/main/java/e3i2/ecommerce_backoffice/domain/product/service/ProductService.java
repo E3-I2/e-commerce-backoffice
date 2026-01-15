@@ -1,6 +1,6 @@
 package e3i2.ecommerce_backoffice.domain.product.service;
 
-import e3i2.ecommerce_backoffice.domain.admin.dto.common.SessionAdmin;
+import e3i2.ecommerce_backoffice.common.dto.session.SessionAdmin;
 import e3i2.ecommerce_backoffice.domain.admin.entity.Admin;
 import e3i2.ecommerce_backoffice.domain.admin.repository.AdminRepository;
 import e3i2.ecommerce_backoffice.domain.product.dto.*;

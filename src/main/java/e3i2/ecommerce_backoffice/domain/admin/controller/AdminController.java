@@ -3,6 +3,7 @@ package e3i2.ecommerce_backoffice.domain.admin.controller;
 import e3i2.ecommerce_backoffice.common.annotation.LoginSessionCheck;
 import e3i2.ecommerce_backoffice.common.dto.response.DataResponse;
 import e3i2.ecommerce_backoffice.common.dto.response.MessageResponse;
+import e3i2.ecommerce_backoffice.common.dto.session.SessionAdmin;
 import e3i2.ecommerce_backoffice.common.exception.ErrorEnum;
 import e3i2.ecommerce_backoffice.common.exception.ServiceErrorException;
 import e3i2.ecommerce_backoffice.common.util.pagination.ItemsWithPagination;
@@ -10,7 +11,6 @@ import e3i2.ecommerce_backoffice.domain.admin.dto.*;
 import e3i2.ecommerce_backoffice.domain.admin.dto.SearchAdminDetailResponse;
 import e3i2.ecommerce_backoffice.domain.admin.dto.UpdateAdminRequest;
 import e3i2.ecommerce_backoffice.domain.admin.dto.UpdateAdminResponse;
-import e3i2.ecommerce_backoffice.domain.admin.dto.common.*;
 import e3i2.ecommerce_backoffice.domain.admin.entity.AdminRole;
 import e3i2.ecommerce_backoffice.domain.admin.entity.AdminStatus;
 import e3i2.ecommerce_backoffice.domain.admin.service.AdminService;
@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static e3i2.ecommerce_backoffice.common.util.Constants.*;
 
@@ -99,7 +101,7 @@ public class AdminController {
     public ResponseEntity<MessageResponse<Void>> logout(
             @SessionAttribute(value = ADMIN_SESSION_NAME) SessionAdmin loginAdmin, HttpSession session) {
         if (loginAdmin == null) {
-            throw new ServiceErrorException(ErrorEnum.LOGOUT_DUPLICATED);
+            throw new ServiceErrorException(ErrorEnum.ERR_LOGOUT_DUPLICATED);
         }
 
         session.invalidate();
@@ -111,7 +113,7 @@ public class AdminController {
     // 관리자 리스트 조회
     @GetMapping
     @LoginSessionCheck
-    public ResponseEntity<DataResponse<ItemsWithPagination<SearchAdminDetailResponse>>> getAdminList(
+    public ResponseEntity<DataResponse<ItemsWithPagination<List<SearchAdminDetailResponse>>>> getAdminList(
             @RequestParam(required = false) String keyword,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -121,7 +123,7 @@ public class AdminController {
             @RequestParam(required = false) AdminStatus status,
             @SessionAttribute(ADMIN_SESSION_NAME) SessionAdmin loginAdmin
     ) {
-        ItemsWithPagination<SearchAdminDetailResponse> response = adminService.getAdminList(
+        ItemsWithPagination<List<SearchAdminDetailResponse>> response = adminService.getAdminList(
                 keyword, page, size, sortBy, sortOrder, role, status, loginAdmin
         );
 

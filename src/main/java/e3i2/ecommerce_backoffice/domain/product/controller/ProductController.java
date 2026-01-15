@@ -1,7 +1,7 @@
 package e3i2.ecommerce_backoffice.domain.product.controller;
 
 import e3i2.ecommerce_backoffice.common.annotation.LoginSessionCheck;
-import e3i2.ecommerce_backoffice.domain.admin.dto.common.SessionAdmin;
+import e3i2.ecommerce_backoffice.common.dto.session.SessionAdmin;
 import e3i2.ecommerce_backoffice.domain.product.dto.*;
 import e3i2.ecommerce_backoffice.domain.product.dto.common.ProductApiResponse;
 import e3i2.ecommerce_backoffice.domain.product.dto.common.ProductApiResponse2;

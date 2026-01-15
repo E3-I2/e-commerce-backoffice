@@ -3,13 +3,26 @@ package e3i2.ecommerce_backoffice.common.exception;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-import static e3i2.ecommerce_backoffice.common.util.Constants.MSG_ADMIN_STATUS_NOT_WAIT;
-import static e3i2.ecommerce_backoffice.common.util.Constants.MSG_LOGOUT_DUPLICATED;
+import static e3i2.ecommerce_backoffice.common.util.Constants.*;
 
 @Getter
 public enum ErrorEnum {
-    NOT_ADMIN_STATUS_WAIT(HttpStatus.CONFLICT, MSG_ADMIN_STATUS_NOT_WAIT)
-    , LOGOUT_DUPLICATED(HttpStatus.UNAUTHORIZED, MSG_LOGOUT_DUPLICATED);
+    ERR_NOT_ADMIN_STATUS_WAIT(HttpStatus.CONFLICT, MSG_ADMIN_STATUS_NOT_WAIT)
+    , ERR_LOGOUT_DUPLICATED(HttpStatus.UNAUTHORIZED, MSG_LOGOUT_DUPLICATED)
+    , ERR_NOT_FOUND_CUSTOMER(HttpStatus.NOT_FOUND, MSG_NOT_FOUND_CUSTOMER)
+    , ERR_DUPLICATED_EMAIL(HttpStatus.BAD_REQUEST, MSG_DUPLICATED_EMAIL)
+    , ERR_DUPLICATED_PHONE(HttpStatus.BAD_REQUEST, MSG_DUPLICATED_PHONE)
+    , ERR_WRONG_EMAIL_PASSWORD(HttpStatus.BAD_REQUEST, MSG_WRONG_EMAIL_PASSWORD)
+    , ERR_WAIT_ADMIN_ACCOUNT_LOGIN(HttpStatus.FORBIDDEN, MSG_WAIT_ADMIN_ACCOUNT_LOGIN)
+    , ERR_DENY_ADMIN_ACCOUNT_LOGIN(HttpStatus.FORBIDDEN, MSG_DENY_ADMIN_ACCOUNT_LOGIN)
+    , ERR_SUSPEND_ADMIN_ACCOUNT_LOGIN(HttpStatus.FORBIDDEN, MSG_SUSPEND_ADMIN_ACCOUNT_LOGIN)
+    , ERR_IN_ACT_ADMIN_ACCOUNT_LOGIN(HttpStatus.FORBIDDEN, MSG_IN_ACT_ADMIN_ACCOUNT_LOGIN)
+    , ERR_UNAUTHORIZED_ACCOUNT_LOGIN(HttpStatus.FORBIDDEN, MSG_UNAUTHORIZED_ACCOUNT_LOGIN)
+    , ERR_ONLY_SUPER_ADMIN_ACCESS(HttpStatus.FORBIDDEN, MSG_ONLY_SUPER_ADMIN_ACCESS)
+    , ERR_NOT_FOUND_ADMIN(HttpStatus.NOT_FOUND, MSG_NOT_FOUND_ADMIN)
+    , ERR_DELETED_ADMIN_SELF(HttpStatus.FORBIDDEN, MSG_NOT_DELETE_ADMIN_SELF)
+    , ERR_SAME_OLD_PASSWORD(HttpStatus.BAD_REQUEST, MSG_SAME_OLD_PASSWORD)
+    , ERR_NOT_MATCH_PASSWORD(HttpStatus.BAD_REQUEST, MSG_NOT_MATCH_PASSWORD);
 
     private final HttpStatus status;
     private final String message;
@@ -17,6 +30,5 @@ public enum ErrorEnum {
     ErrorEnum(HttpStatus status, String message) {
         this.status = status;
         this.message = message;
-
     }
 }
