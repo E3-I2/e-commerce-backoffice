@@ -202,17 +202,21 @@ public class AdminController {
     @GetMapping("/me")
     @LoginSessionCheck
     public ResponseEntity<GetMyProfileResponse> getMyProfile(
-            @SessionAttribute(value = ADMIN_SESSION_NAME, required = false) SessionAdmin loginAdmin) {
+            @SessionAttribute(value = ADMIN_SESSION_NAME, required = false) SessionAdmin loginAdmin
+    ) {
         return ResponseEntity.status(HttpStatus.OK).body(adminService.getMyProfile(loginAdmin.getAdminId()));
     }
 
     // 내 프로필 수정
     @PutMapping("/me/profile")
     @LoginSessionCheck
-    public ResponseEntity<UpdateMyProfileResponse> updateMyProfile(
+    public ResponseEntity<AdminApiResponse<UpdateMyProfileResponse>> updateMyProfile(
             @Valid @RequestBody UpdateMyProfileRequest request,
-            @SessionAttribute(value = ADMIN_SESSION_NAME, required = false) SessionAdmin loginAdmin) {
-        return ResponseEntity.status(HttpStatus.OK).body(adminService.updateMyProfile(request, loginAdmin.getAdminId()));
+            @SessionAttribute(value = ADMIN_SESSION_NAME, required = false) SessionAdmin loginAdmin
+    ) {
+        UpdateMyProfileResponse response = adminService.updateMyProfile(request, loginAdmin.getAdminId());
+
+        return ResponseEntity.status(HttpStatus.OK).body(AdminApiResponse.success("OK","프로필이 성공적으로 업데이트되었습니다.", response));
     }
 
     // 내 비밀번호 변경
@@ -220,7 +224,9 @@ public class AdminController {
     @LoginSessionCheck
     public ResponseEntity<Void> changeMyPassword(
             @Valid @RequestBody ChangeMyPasswordRequest request,
-            @SessionAttribute(value = ADMIN_SESSION_NAME, required = false) SessionAdmin loginAdmin) {
+            @SessionAttribute(value = ADMIN_SESSION_NAME, required = false) SessionAdmin loginAdmin
+    ) {
+
         adminService.changeMyPassword(request, loginAdmin.getAdminId());
         return ResponseEntity.status(HttpStatus.OK).build();
     }
@@ -231,7 +237,8 @@ public class AdminController {
     public void changeAdminRole(
             @PathVariable Long adminId,
             @RequestBody ChangeAdminRoleRequest request,
-            @SessionAttribute(value = ADMIN_SESSION_NAME, required = false) SessionAdmin loginAdmin) {
+            @SessionAttribute(value = ADMIN_SESSION_NAME, required = false) SessionAdmin loginAdmin
+    ) {
         adminService.changeAdminRole(request, adminId, loginAdmin);
     }
 
@@ -241,7 +248,8 @@ public class AdminController {
     public void changeAdminStatus(
             @PathVariable Long adminId,
             @RequestBody ChangeAdminStatusRequest request,
-            @SessionAttribute(value = ADMIN_SESSION_NAME, required = false) SessionAdmin loginAdmin) {
+            @SessionAttribute(value = ADMIN_SESSION_NAME, required = false) SessionAdmin loginAdmin
+    ) {
         adminService.changeAdminStatus(request, adminId, loginAdmin);
     }
 }

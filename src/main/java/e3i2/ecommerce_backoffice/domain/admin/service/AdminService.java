@@ -26,7 +26,7 @@ public class AdminService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public SignUpResponse signup(@Valid SignUpRequest request) {
+    public SignUpResponse signup(SignUpRequest request) {
         String encodePassword = passwordEncoder.encode(request.getPassword());
         Admin admin = Admin.regist(request.getEmail(), encodePassword, request.getAdminName(), request.getPhone(), request.getRole(), request.getRequestMessage());
         Admin saveAdmin = adminRepository.save(admin);
@@ -43,9 +43,9 @@ public class AdminService {
     }
 
     @Transactional
-    public SessionAdmin login(@Valid LoginRequest request) {
+    public SessionAdmin login(LoginRequest request) {
         Admin admin = adminRepository.findByEmail(request.getEmail()).orElseThrow(
-                () -> new IllegalAccessError("이메일이 틀렸습니다.")  //TODO: 추후 전역 예외처리 필요
+                () -> new IllegalAccessError("이메일이 틀렸습니다")  //TODO: 추후 전역 예외처리 필요
         );
 
         boolean matches = passwordEncoder.matches(
@@ -54,24 +54,24 @@ public class AdminService {
         );
 
         if (!matches){
-            throw new IllegalAccessError("비밀번호가 틀렸습니다.");
+            throw new IllegalAccessError("비밀번호가 틀렸습니다");
         }
 
         // 관리자 상태별 로그인 제한
         switch (admin.getStatus()) {
             case WAIT:
-                throw new IllegalAccessError("해당 계정은 승인 대기 중입니다.");
+                throw new IllegalAccessError("해당 계정은 승인 대기 중입니다");
             case DENY:
-                throw new IllegalAccessError("해당 계정은 관리자 신청이 거부되었습니다.");
+                throw new IllegalAccessError("해당 계정은 관리자 신청이 거부되었습니다");
             case SUSPEND:
-                throw new IllegalAccessError("해당 계정은 정지된 상태입니다.");
+                throw new IllegalAccessError("해당 계정은 정지된 상태입니다");
             case IN_ACT:
-                throw new IllegalAccessError("해당 계정은 비활성화된 상태입니다.");
+                throw new IllegalAccessError("해당 계정은 비활성화된 상태입니다");
             case ACT:
                 // 정상 로그인 → 통과
                 break;
             default:
-                throw new IllegalAccessError("알 수 없는 계정 상태입니다.");
+                throw new IllegalAccessError("알 수 없는 계정 상태입니다");
         }
 
         return new SessionAdmin(
@@ -89,11 +89,11 @@ public class AdminService {
     @Transactional
     public AcceptAdminResponse acceptAdmin(Long targetAdminId, SessionAdmin loginAdmin) {
         if (loginAdmin.getRole() != AdminRole.SUPER_ADMIN) {
-            throw new IllegalAccessError("슈퍼 관리자만 승인/거부할 수 있습니다.");
+            throw new IllegalAccessError("슈퍼 관리자만 승인/거부할 수 있습니다");
         }
 
         Admin admin = adminRepository.findById(targetAdminId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 관리자입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 관리자입니다"));
 
         admin.accept();
 
@@ -119,11 +119,11 @@ public class AdminService {
     ) {
 
         if (loginAdmin.getRole() != AdminRole.SUPER_ADMIN) {
-            throw new IllegalAccessError("슈퍼 관리자만 승인/거부할 수 있습니다.");
+            throw new IllegalAccessError("슈퍼 관리자만 승인/거부할 수 있습니다");
         }
 
         Admin admin = adminRepository.findById(targetAdminId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 관리자입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 관리자입니다"));
 
         admin.deny(request.getDeniedReason());
 
@@ -145,7 +145,7 @@ public class AdminService {
     @Transactional(readOnly = true)
     public Page<SearchAdminListResponse> getAdminList(String keyword, int page, int size, String sortBy, String direction, AdminRole role, AdminStatus status, SessionAdmin loginAdmin) {
         if (loginAdmin.getRole() != AdminRole.SUPER_ADMIN) {
-            throw new IllegalAccessError("슈퍼 관리자만 관리자 리스트 조회가 가능합니다.");
+            throw new IllegalAccessError("슈퍼 관리자만 관리자 리스트 조회가 가능합니다");
         }
 
         Sort sort = direction.equalsIgnoreCase("asc")
@@ -178,15 +178,15 @@ public class AdminService {
     @Transactional(readOnly = true)
     public SearchAdminDetailResponse getAdminDetail(Long adminId, SessionAdmin loginAdmin) {
         if (loginAdmin.getRole() != AdminRole.SUPER_ADMIN) {
-            throw new IllegalAccessError("슈퍼 관리자만 접근할 수 있습니다.");
+            throw new IllegalAccessError("슈퍼 관리자만 접근할 수 있습니다");
         }
 
         Admin admin = adminRepository.findById(adminId).orElseThrow(
-                () -> new IllegalStateException("존재하지 않는 관리자입니다.")
+                () -> new IllegalStateException("존재하지 않는 관리자입니다")
         );
 
         if (admin.getDeleted()) {
-            throw new IllegalStateException("삭제된 관리자입니다.");
+            throw new IllegalStateException("삭제된 관리자입니다");
         }
         return SearchAdminDetailResponse.regist(
                 admin.getAdminId(),
@@ -207,17 +207,17 @@ public class AdminService {
     @Transactional
     public UpdateAdminResponse updateAdmin(Long adminId, @Valid UpdateAdminRequest request, SessionAdmin loginAdmin) {
         if (loginAdmin.getRole() != AdminRole.SUPER_ADMIN) {
-            throw new IllegalAccessError("슈퍼 관리자만 접근할 수 있습니다.");
+            throw new IllegalAccessError("슈퍼 관리자만 접근할 수 있습니다");
         }
 
         Admin admin = adminRepository.findByAdminIdAndDeletedFalse(adminId).orElseThrow(
-                () -> new IllegalStateException("존재하지 않는 관리자입니다.")
+                () -> new IllegalStateException("존재하지 않는 관리자입니다")
         );
 
         // 이메일 중복 체크 (본인 제외)
         if (!admin.getEmail().equals(request.getEmail())) {
             if (adminRepository.existsByEmailAndAdminIdNot(request.getEmail(), adminId)){
-                throw new IllegalStateException("이미 사용 중인 이메일입니다.");
+                throw new IllegalStateException("이미 사용 중인 이메일입니다");
             }
         }
 
@@ -241,15 +241,15 @@ public class AdminService {
     @Transactional
     public void deleteAdmin(Long adminId, SessionAdmin loginAdmin) {
         if (loginAdmin.getRole() != AdminRole.SUPER_ADMIN) {
-            throw new IllegalAccessError("슈퍼 관리자만 접근할 수 있습니다.");
+            throw new IllegalAccessError("슈퍼 관리자만 접근할 수 있습니다");
         }
 
         Admin admin = adminRepository.findByAdminIdAndDeletedFalse(adminId).orElseThrow(
-                () -> new IllegalStateException("존재하지 않는 관리자입니다.")
+                () -> new IllegalStateException("존재하지 않는 관리자입니다")
         );
 
         if (admin.getAdminId().equals(loginAdmin.getAdminId())) {
-            throw new IllegalStateException("본인 계정은 삭제할 수 없습니다.");
+            throw new IllegalStateException("본인 계정은 삭제할 수 없습니다");
         }
 
         admin.delete();
@@ -258,10 +258,10 @@ public class AdminService {
     @Transactional(readOnly = true)
     public GetMyProfileResponse getMyProfile(Long adminId) {
         Admin admin = adminRepository.findById(adminId).orElseThrow(
-                () -> new IllegalArgumentException("해당 관리자를 찾을 수 없습니다.")
+                () -> new IllegalArgumentException("존재하지 않는 관리자입니다")
         );
         if (admin.getDeleted().equals(true)) {
-            throw new IllegalStateException("삭제된 관리자입니다.");
+            throw new IllegalStateException("삭제된 관리자입니다");
         }
         return GetMyProfileResponse.regist(
                 admin.getAdminName(),
@@ -273,15 +273,15 @@ public class AdminService {
     @Transactional
     public UpdateMyProfileResponse updateMyProfile(UpdateMyProfileRequest request, Long adminId) {
         Admin admin = adminRepository.findById(adminId).orElseThrow(
-                () -> new IllegalArgumentException("해당 관리자를 찾을 수 없습니다.")
+                () -> new IllegalArgumentException("존재하지 않는 관리자입니다")
         );
 
         if (admin.getDeleted().equals(true)) {
-            throw new IllegalStateException("삭제된 관리자입니다.");
+            throw new IllegalStateException("삭제된 관리자입니다");
         }
 
         if (adminRepository.existsByEmailAndAdminIdNot(request.getEmail(), adminId)) {
-            throw new IllegalArgumentException("이미 사용중인 이메일입니다.");
+            throw new IllegalArgumentException("이미 사용중인 이메일입니다");
         }
 
         admin.update(
@@ -291,24 +291,30 @@ public class AdminService {
         );
 
         return UpdateMyProfileResponse.regist(
+                admin.getAdminId(),
                 admin.getAdminName(),
                 admin.getEmail(),
-                admin.getPhone()
+                admin.getPhone(),
+                admin.getRole(),
+                admin.getStatus(),
+                admin.getCreatedAt(),
+                admin.getAcceptedAt(),
+                admin.getDeniedAt()
         );
     }
 
     @Transactional
     public void changeMyPassword(ChangeMyPasswordRequest request, Long adminId) {
         Admin admin = adminRepository.findById(adminId).orElseThrow(
-                () -> new IllegalStateException("해당 관리자를 찾을 수 없습니다.")
+                () -> new IllegalStateException("존재하지 않는 관리자입니다")
         );
 
         if (!passwordEncoder.matches(request.getCurrentPassword(), admin.getPassword())) {
-            throw new IllegalArgumentException("현재 비밀번호가 일치하지 않습니다.");
+            throw new IllegalArgumentException("현재 비밀번호가 일치하지 않습니다");
         }
 
         if (passwordEncoder.matches(request.getNewPassword(), admin.getPassword())) {
-            throw new IllegalArgumentException("새 비밀번호가 기존 비밀번호와 같습니다.");
+            throw new IllegalArgumentException("새 비밀번호가 기존 비밀번호와 같습니다");
         }
 
         String encodedPassword = passwordEncoder.encode(request.getNewPassword());
@@ -318,11 +324,11 @@ public class AdminService {
     @Transactional
     public void changeAdminRole(ChangeAdminRoleRequest request, Long adminId, SessionAdmin loginAdmin) {
         if (loginAdmin.getRole() != AdminRole.SUPER_ADMIN) {
-            throw new IllegalAccessError("슈퍼 관리자만 접근할 수 있습니다.");
+            throw new IllegalAccessError("슈퍼 관리자만 접근할 수 있습니다");
         }
 
         Admin admin = adminRepository.findById(adminId).orElseThrow(
-                () -> new IllegalStateException("해당 관리자를 찾을 수 없습니다.")
+                () -> new IllegalStateException("존재하지 않는 관리자입니다")
         );
 
         admin.changeAdminRole(request.getRole());
@@ -331,11 +337,11 @@ public class AdminService {
     @Transactional
     public void changeAdminStatus(ChangeAdminStatusRequest request, Long adminId, SessionAdmin loginAdmin) {
         if (loginAdmin.getRole() != AdminRole.SUPER_ADMIN) {
-            throw new IllegalAccessError("슈퍼 관리자만 접근할 수 있습니다.");
+            throw new IllegalAccessError("슈퍼 관리자만 접근할 수 있습니다");
         }
 
         Admin admin = adminRepository.findById(adminId).orElseThrow(
-                () -> new IllegalStateException("해당 관리자를 찾을 수 없습니다.")
+                () -> new IllegalStateException("존재하지 않는 관리자입니다")
         );
 
         admin.changeAdminStatus(request.getStatus());
