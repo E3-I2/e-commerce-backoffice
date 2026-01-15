@@ -153,7 +153,7 @@ public class AdminService {
     @Transactional(readOnly = true)
     public AdminListDataResponse getAdminList(String keyword, int page, int size, String sortBy, String sortOrder, AdminRole role, AdminStatus status, SessionAdmin loginAdmin) {
         if (loginAdmin.getRole() != AdminRole.SUPER_ADMIN) {
-            throw new IllegalAccessError("슈퍼 관리자만 관리자 리스트 조회가 가능합니다.");
+            throw new IllegalAccessError("슈퍼 관리자만 관리자 리스트 조회가 가능합니다");
         }
 
         Sort sort = sortOrder.equalsIgnoreCase("asc")
@@ -218,15 +218,15 @@ public class AdminService {
     @Transactional(readOnly = true)
     public SearchAdminDetailResponse getAdminDetail(Long adminId, SessionAdmin loginAdmin) {
         if (loginAdmin.getRole() != AdminRole.SUPER_ADMIN) {
-            throw new IllegalAccessError("슈퍼 관리자만 접근할 수 있습니다.");
+            throw new IllegalAccessError("슈퍼 관리자만 접근할 수 있습니다");
         }
 
         Admin admin = adminRepository.findById(adminId).orElseThrow(
-                () -> new IllegalStateException("존재하지 않는 관리자입니다.")
+                () -> new IllegalStateException("존재하지 않는 관리자입니다")
         );
 
         if (admin.getDeleted()) {
-            throw new IllegalStateException("삭제된 관리자입니다.");
+            throw new IllegalStateException("삭제된 관리자입니다");
         }
 
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
