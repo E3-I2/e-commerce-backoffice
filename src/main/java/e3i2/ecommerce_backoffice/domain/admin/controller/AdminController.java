@@ -38,8 +38,8 @@ public class AdminController {
         SignUpResponse response = adminService.signup(request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(AdminApiResponse.success(
-                        "CREATED",
-                        "회원가입 신청이 완료되었습니다. 관리자 승인을 기다려주세요.",
+                        "201 CREATED",
+                        "회원가입 신청이 완료되었습니다. 관리자 승인을 기다려주세요",
                         response
                 )
         );
@@ -56,8 +56,8 @@ public class AdminController {
 
         return ResponseEntity.ok(
                 AdminApiResponse.success(
-                        "OK",
-                        "관리자가 승인되었습니다.",
+                        "200 OK",
+                        "관리자가 승인되었습니다",
                         response
                 )
         );
@@ -75,8 +75,8 @@ public class AdminController {
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 AdminApiResponse.success(
-                        "OK",
-                        "관리자 신청이 거부되었습니다.",
+                        "200 OK",
+                        "관리자 신청이 거부되었습니다",
                         response
                 )
         );
@@ -110,7 +110,7 @@ public class AdminController {
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 AdminApiResponse.success(
-                        "OK",
+                        "200 OK",
                         "로그인 성공",
                         response
                 )
@@ -193,7 +193,7 @@ public class AdminController {
 
         return ResponseEntity.status(HttpStatus.OK).body(AdminApiResponse.success(
                 "OK",
-                "사용자가 삭제되었습니다.",
+                "사용자가 삭제되었습니다",
                 null
         ));
     }
