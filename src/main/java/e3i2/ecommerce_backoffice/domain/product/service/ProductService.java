@@ -28,7 +28,7 @@ public class ProductService {
 
     @Transactional
     public CreateProductResponse createProduct(@Valid CreateProductRequest request, SessionAdmin sessionAdmin) {
-        Admin admin = adminRepository.findById(sessionAdmin.getAdminId()).orElseThrow(() -> new IllegalStateException("로그인 계정의 관리자 정보를 찾을 수 없습니다"));
+        Admin admin = adminRepository.findById(sessionAdmin.getAdminId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 관리자입니다"));
 
         Product product = Product.regist(
                 admin
@@ -94,7 +94,7 @@ public class ProductService {
 
     @Transactional
     public UpdateInfoProductResponse updateInfoProduct(Long productId, UpdateInfoProductRequest request, SessionAdmin sessionAdmin) {
-        Admin admin = adminRepository.findById(sessionAdmin.getAdminId()).orElseThrow(() -> new IllegalStateException("로그인 계정의 관리자 정보를 찾을 수 없습니다"));
+        Admin admin = adminRepository.findById(sessionAdmin.getAdminId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 관리자입니다"));
         Product product = productRepository.findByProductIdAndDeletedFalse(productId).orElseThrow(() -> new IllegalStateException("상품을 찾을 수 없습니다"));
 
         product.updateInfo(request.getProductName(), request.getCategory(), request.getPrice());
@@ -115,7 +115,7 @@ public class ProductService {
 
     @Transactional
     public UpdateQuantityProductResponse updateQuantityProduct(Long productId, UpdateQuantityProductRequest request, SessionAdmin sessionAdmin) {
-        Admin admin = adminRepository.findById(sessionAdmin.getAdminId()).orElseThrow(() -> new IllegalStateException("로그인 계정의 관리자 정보를 찾을 수 없습니다"));
+        Admin admin = adminRepository.findById(sessionAdmin.getAdminId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 관리자입니다"));
         Product product = productRepository.findByProductIdAndDeletedFalse(productId).orElseThrow(() -> new IllegalStateException("상품을 찾을 수 없습니다"));
 
         product.updateQuantity(request.getQuantity());
@@ -136,7 +136,7 @@ public class ProductService {
 
     @Transactional
     public UpdateStatusProductResponse updateStatusProduct(Long productId, UpdateStatusProductRequest request, SessionAdmin sessionAdmin) {
-        Admin admin = adminRepository.findById(sessionAdmin.getAdminId()).orElseThrow(() -> new IllegalStateException("로그인 계정의 관리자 정보를 찾을 수 없습니다"));
+        Admin admin = adminRepository.findById(sessionAdmin.getAdminId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 관리자입니다"));
         Product product = productRepository.findByProductIdAndDeletedFalse(productId).orElseThrow(() -> new IllegalStateException("상품을 찾을 수 없습니다"));
 
         product.updateStatus(request.getStatus());
@@ -157,7 +157,7 @@ public class ProductService {
 
     @Transactional
     public void deleteProduct(Long productId, SessionAdmin sessionAdmin) {
-        adminRepository.findById(sessionAdmin.getAdminId()).orElseThrow(() -> new IllegalStateException("로그인 계정의 관리자 정보를 찾을 수 없습니다"));
+        adminRepository.findById(sessionAdmin.getAdminId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 관리자입니다"));
         Product product = productRepository.findByProductIdAndDeletedFalse(productId).orElseThrow(() -> new IllegalStateException("상품을 찾을 수 없습니다"));
 
         product.delete();

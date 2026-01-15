@@ -1,9 +1,11 @@
 package e3i2.ecommerce_backoffice.domain.product.dto.common;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
+@JsonPropertyOrder({ "success", "code", "data" })
 public class ProductApiResponse<T> {
     public Boolean success;
     public String code;
