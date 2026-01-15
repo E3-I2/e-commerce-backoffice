@@ -2,6 +2,8 @@ package e3i2.ecommerce_backoffice.domain.admin.service;
 
 import e3i2.ecommerce_backoffice.common.config.PasswordEncoder;
 import e3i2.ecommerce_backoffice.domain.admin.dto.*;
+import e3i2.ecommerce_backoffice.domain.admin.dto.common.AdminListDataResponse;
+import e3i2.ecommerce_backoffice.domain.admin.dto.common.Pagination;
 import e3i2.ecommerce_backoffice.domain.admin.dto.common.SessionAdmin;
 import e3i2.ecommerce_backoffice.domain.admin.dto.SearchAdminDetailResponse;
 import e3i2.ecommerce_backoffice.domain.admin.dto.UpdateAdminRequest;
@@ -18,6 +20,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -146,12 +151,12 @@ public class AdminService {
 
     //관리자 리스트 조회
     @Transactional(readOnly = true)
-    public Page<SearchAdminListResponse> getAdminList(String keyword, int page, int size, String sortBy, String direction, AdminRole role, AdminStatus status, SessionAdmin loginAdmin) {
+    public AdminListDataResponse getAdminList(String keyword, int page, int size, String sortBy, String sortOrder, AdminRole role, AdminStatus status, SessionAdmin loginAdmin) {
         if (loginAdmin.getRole() != AdminRole.SUPER_ADMIN) {
-            throw new IllegalAccessError("슈퍼 관리자만 관리자 리스트 조회가 가능합니다");
+            throw new IllegalAccessError("슈퍼 관리자만 관리자 리스트 조회가 가능합니다.");
         }
 
-        Sort sort = direction.equalsIgnoreCase("asc")
+        Sort sort = sortOrder.equalsIgnoreCase("asc")
                 ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
 
@@ -164,16 +169,48 @@ public class AdminService {
                 pageable
         );
 
-        return admins.map(a -> SearchAdminListResponse.regist(
-                a.getAdminId(),
-                a.getAdminName(),
-                a.getEmail(),
-                a.getPhone(),
-                a.getRole(),
-                a.getStatus(),
-                a.getCreatedAt(),
-                a.getAcceptedAt()
-        ));
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        List<SearchAdminDetailResponse> items = admins.getContent().stream()
+                .map(a -> {
+
+                    String acceptedAt = a.getAcceptedAt() == null ? "" : a.getAcceptedAt().format(fmt);
+                    String deniedAt = a.getDeniedAt() == null ? "" : a.getDeniedAt().format(fmt);
+
+                    String requestMessage = null;
+                    String deniedReason = null;
+
+                    if (a.getStatus() == AdminStatus.WAIT) {
+                        requestMessage = a.getRequestMessage();
+                    }
+                    else if (a.getStatus() == AdminStatus.DENY) {
+                        deniedReason = a.getDeniedReason();
+                    }
+
+                    return SearchAdminDetailResponse.regist(
+                            a.getAdminId(),
+                            a.getAdminName(),
+                            a.getEmail(),
+                            a.getPhone(),
+                            a.getRole(),
+                            a.getStatus(),
+                            a.getCreatedAt(),
+                            acceptedAt,
+                            deniedAt,
+                            requestMessage,
+                            deniedReason
+                    );
+                })
+                .toList();
+
+        Pagination pagination = Pagination.regist(
+                page,
+                size,
+                admins.getTotalElements(),
+                admins.getTotalPages()
+        );
+
+        return AdminListDataResponse.regist(items, pagination);
 
     }
 
@@ -181,16 +218,31 @@ public class AdminService {
     @Transactional(readOnly = true)
     public SearchAdminDetailResponse getAdminDetail(Long adminId, SessionAdmin loginAdmin) {
         if (loginAdmin.getRole() != AdminRole.SUPER_ADMIN) {
-            throw new IllegalAccessError("슈퍼 관리자만 접근할 수 있습니다");
+            throw new IllegalAccessError("슈퍼 관리자만 접근할 수 있습니다.");
         }
 
         Admin admin = adminRepository.findById(adminId).orElseThrow(
-                () -> new IllegalStateException("존재하지 않는 관리자입니다")
+                () -> new IllegalStateException("존재하지 않는 관리자입니다.")
         );
 
         if (admin.getDeleted()) {
-            throw new IllegalStateException("삭제된 관리자입니다");
+            throw new IllegalStateException("삭제된 관리자입니다.");
         }
+
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        String acceptedAt = admin.getAcceptedAt() == null ? "" : admin.getAcceptedAt().format(fmt);
+        String deniedAt = admin.getDeniedAt() == null ? "" : admin.getDeniedAt().format(fmt);
+
+        String requestMessage = null;
+        String deniedReason = null;
+
+        if (admin.getStatus() == AdminStatus.WAIT) {
+            requestMessage = admin.getRequestMessage();
+        } else if (admin.getStatus() == AdminStatus.DENY) {
+            deniedReason = admin.getDeniedReason();
+        }
+
         return SearchAdminDetailResponse.regist(
                 admin.getAdminId(),
                 admin.getAdminName(),
@@ -199,10 +251,10 @@ public class AdminService {
                 admin.getRole(),
                 admin.getStatus(),
                 admin.getCreatedAt(),
-                admin.getAcceptedAt(),
-                admin.getDeniedAt(),
-                admin.getRequestMessage(),
-                admin.getDeniedReason()
+                acceptedAt,
+                deniedAt,
+                requestMessage,
+                deniedReason
         );
     }
 
