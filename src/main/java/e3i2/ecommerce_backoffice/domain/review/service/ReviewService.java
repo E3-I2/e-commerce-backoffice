@@ -3,7 +3,6 @@ package e3i2.ecommerce_backoffice.domain.review.service;
 import e3i2.ecommerce_backoffice.common.exception.ErrorEnum;
 import e3i2.ecommerce_backoffice.common.exception.ServiceErrorException;
 import e3i2.ecommerce_backoffice.common.util.pagination.ItemsWithPagination;
-import e3i2.ecommerce_backoffice.domain.review.dto.GetReviewResponse;
 import e3i2.ecommerce_backoffice.domain.review.dto.SearchReviewListResponse;
 import e3i2.ecommerce_backoffice.domain.review.entity.Review;
 import e3i2.ecommerce_backoffice.domain.review.repository.ReviewRepositorty;
@@ -56,11 +55,11 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public GetReviewResponse findOne(Long reviewId) {
+    public SearchReviewListResponse findOne(Long reviewId) {
         Review review = reviewRepositorty.findById(reviewId).orElseThrow(
                 () -> new ServiceErrorException(ErrorEnum.ERR_NOT_FOUND_REVIEW)
         );
-        return new GetReviewResponse(
+        return SearchReviewListResponse.register(
                 review.getReviewId(),
                 review.getOrder().getOrderId(),
                 review.getProduct().getProductId(),
