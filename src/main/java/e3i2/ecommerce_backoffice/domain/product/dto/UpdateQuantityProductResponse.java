@@ -33,7 +33,7 @@ public class UpdateQuantityProductResponse {
     private String adminName;
     private String adminEmail;
 
-    public static UpdateQuantityProductResponse regist(Long id, String productName, String category, Long price, Long quantity, String status, LocalDateTime createdAt
+    public static UpdateQuantityProductResponse register(Long id, String productName, String category, Long price, Long quantity, String status, LocalDateTime createdAt
             , Long adminId, String adminName, String adminEmail) {
         UpdateQuantityProductResponse response = new UpdateQuantityProductResponse();
         response.id = id;

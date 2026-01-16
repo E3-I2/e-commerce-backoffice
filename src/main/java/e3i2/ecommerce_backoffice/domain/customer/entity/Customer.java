@@ -41,7 +41,7 @@ public class Customer extends Base {
     private Boolean deleted;
     private LocalDateTime deletedAt;
 
-    public static Customer regist(String customerName, String email, String phone, CustomerStatus customerStatus) {
+    public static Customer register(String customerName, String email, String phone, CustomerStatus customerStatus) {
         Customer customer = new Customer();
         customer.customerName = customerName;
         customer.email = email;

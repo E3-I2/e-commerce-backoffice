@@ -1,10 +1,12 @@
 package e3i2.ecommerce_backoffice.domain.product.service;
 
-import e3i2.ecommerce_backoffice.domain.admin.dto.common.SessionAdmin;
+import e3i2.ecommerce_backoffice.common.dto.session.SessionAdmin;
+import e3i2.ecommerce_backoffice.common.exception.ServiceErrorException;
+import e3i2.ecommerce_backoffice.common.util.pagination.ItemsWithPagination;
 import e3i2.ecommerce_backoffice.domain.admin.entity.Admin;
 import e3i2.ecommerce_backoffice.domain.admin.repository.AdminRepository;
+import e3i2.ecommerce_backoffice.domain.customer.dto.GetCustomerResponse;
 import e3i2.ecommerce_backoffice.domain.product.dto.*;
-import e3i2.ecommerce_backoffice.domain.product.dto.common.ProductsWithPagination;
 import e3i2.ecommerce_backoffice.domain.product.entity.Product;
 import e3i2.ecommerce_backoffice.domain.product.entity.ProductCategory;
 import e3i2.ecommerce_backoffice.domain.product.entity.ProductStatus;
@@ -20,6 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static e3i2.ecommerce_backoffice.common.exception.ErrorEnum.ERR_NOT_FOUND_ADMIN;
+import static e3i2.ecommerce_backoffice.common.exception.ErrorEnum.ERR_NOT_FOUND_PRODUCT;
+import static e3i2.ecommerce_backoffice.common.util.Constants.MSG_NOT_FOUND_ADMIN;
+
 @Service
 @RequiredArgsConstructor
 public class ProductService {
@@ -28,11 +34,11 @@ public class ProductService {
 
     @Transactional
     public CreateProductResponse createProduct(@Valid CreateProductRequest request, SessionAdmin sessionAdmin) {
-        Admin admin = adminRepository.findById(sessionAdmin.getAdminId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 관리자입니다"));
+        Admin admin = adminRepository.findById(sessionAdmin.getAdminId()).orElseThrow(() -> new ServiceErrorException(ERR_NOT_FOUND_ADMIN));
 
-        Product product = Product.regist(
+        Product product = Product.register(
                 admin
-                , request.getName()
+                , request.getProductName()
                 , request.getCategory()
                 , request.getPrice()
                 , request.getQuantity()
@@ -41,7 +47,7 @@ public class ProductService {
 
         Product saveProduct = productRepository.save(product);
 
-        return CreateProductResponse.regist(
+        return CreateProductResponse.register(
                 saveProduct.getProductId()
                 , saveProduct.getProductName()
                 , saveProduct.getCategory().getCategoryCode()
@@ -56,10 +62,10 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-    public ProductsWithPagination searchAllProduct(String productName, ProductCategory category, ProductStatus status, Integer page, Integer limit, String sortBy, String sortOrder) {
+    public ItemsWithPagination<List<SearchProductResponse>> searchAllProduct(String productName, ProductCategory category, ProductStatus status, Integer page, Integer limit, String sortBy, String sortOrder) {
         Page<Product> products = productRepository.findProducts(productName, category, status, PageRequest.of(page - 1, limit, Sort.by(sortOrder.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy)));
 
-        List<SearchProductResponse> items = products.stream().map(product -> SearchProductResponse.regist(
+        List<SearchProductResponse> items = products.stream().map(product -> SearchProductResponse.register(
                 product.getProductId()
                 , product.getProductName()
                 , product.getCategory().getCategoryCode()
@@ -72,13 +78,13 @@ public class ProductService {
                 , product.getAdmin().getEmail()
         )).toList();
 
-        return ProductsWithPagination.regist(items, page, limit, products.getTotalElements());
+        return ItemsWithPagination.register(items, page, limit, products.getTotalElements());
     }
 
     @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public SearchProductResponse searchProduct(Long productId) {
-        Product product = productRepository.findByProductIdAndDeletedFalse(productId).orElseThrow(() -> new IllegalStateException("상품을 찾을 수 없습니다"));
-        return SearchProductResponse.regist(
+        Product product = productRepository.findByProductIdAndDeletedFalse(productId).orElseThrow(() -> new ServiceErrorException(ERR_NOT_FOUND_PRODUCT));
+        return SearchProductResponse.register(
                 product.getProductId()
                 , product.getProductName()
                 , product.getCategory().getCategoryCode()
@@ -94,12 +100,12 @@ public class ProductService {
 
     @Transactional
     public UpdateInfoProductResponse updateInfoProduct(Long productId, UpdateInfoProductRequest request, SessionAdmin sessionAdmin) {
-        Admin admin = adminRepository.findById(sessionAdmin.getAdminId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 관리자입니다"));
-        Product product = productRepository.findByProductIdAndDeletedFalse(productId).orElseThrow(() -> new IllegalStateException("상품을 찾을 수 없습니다"));
+        Admin admin = adminRepository.findByAdminIdAndDeletedFalse(sessionAdmin.getAdminId()).orElseThrow(() -> new ServiceErrorException(ERR_NOT_FOUND_ADMIN));
+        Product product = productRepository.findByProductIdAndDeletedFalse(productId).orElseThrow(() -> new ServiceErrorException(ERR_NOT_FOUND_PRODUCT));
 
         product.updateInfo(request.getProductName(), request.getCategory(), request.getPrice());
 
-        return UpdateInfoProductResponse.regist(
+        return UpdateInfoProductResponse.register(
                 product.getProductId()
                 , product.getProductName()
                 , product.getCategory().getCategoryCode()
@@ -115,12 +121,12 @@ public class ProductService {
 
     @Transactional
     public UpdateQuantityProductResponse updateQuantityProduct(Long productId, UpdateQuantityProductRequest request, SessionAdmin sessionAdmin) {
-        Admin admin = adminRepository.findById(sessionAdmin.getAdminId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 관리자입니다"));
-        Product product = productRepository.findByProductIdAndDeletedFalse(productId).orElseThrow(() -> new IllegalStateException("상품을 찾을 수 없습니다"));
+        Admin admin = adminRepository.findByAdminIdAndDeletedFalse(sessionAdmin.getAdminId()).orElseThrow(() -> new ServiceErrorException(ERR_NOT_FOUND_ADMIN));
+        Product product = productRepository.findByProductIdAndDeletedFalse(productId).orElseThrow(() -> new ServiceErrorException(ERR_NOT_FOUND_PRODUCT));
 
         product.updateQuantity(request.getQuantity());
 
-        return UpdateQuantityProductResponse.regist(
+        return UpdateQuantityProductResponse.register(
                 product.getProductId()
                 , product.getProductName()
                 , product.getCategory().getCategoryCode()
@@ -136,12 +142,12 @@ public class ProductService {
 
     @Transactional
     public UpdateStatusProductResponse updateStatusProduct(Long productId, UpdateStatusProductRequest request, SessionAdmin sessionAdmin) {
-        Admin admin = adminRepository.findById(sessionAdmin.getAdminId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 관리자입니다"));
-        Product product = productRepository.findByProductIdAndDeletedFalse(productId).orElseThrow(() -> new IllegalStateException("상품을 찾을 수 없습니다"));
+        Admin admin = adminRepository.findByAdminIdAndDeletedFalse(sessionAdmin.getAdminId()).orElseThrow(() -> new ServiceErrorException(ERR_NOT_FOUND_ADMIN));
+        Product product = productRepository.findByProductIdAndDeletedFalse(productId).orElseThrow(() -> new ServiceErrorException(ERR_NOT_FOUND_PRODUCT));
 
         product.updateStatus(request.getStatus());
 
-        return UpdateStatusProductResponse.regist(
+        return UpdateStatusProductResponse.register(
                 product.getProductId()
                 , product.getProductName()
                 , product.getCategory().getCategoryCode()
@@ -157,8 +163,8 @@ public class ProductService {
 
     @Transactional
     public void deleteProduct(Long productId, SessionAdmin sessionAdmin) {
-        adminRepository.findById(sessionAdmin.getAdminId()).orElseThrow(() -> new IllegalStateException("존재하지 않는 관리자입니다"));
-        Product product = productRepository.findByProductIdAndDeletedFalse(productId).orElseThrow(() -> new IllegalStateException("상품을 찾을 수 없습니다"));
+        Admin admin = adminRepository.findByAdminIdAndDeletedFalse(sessionAdmin.getAdminId()).orElseThrow(() -> new ServiceErrorException(ERR_NOT_FOUND_ADMIN));
+        Product product = productRepository.findByProductIdAndDeletedFalse(productId).orElseThrow(() -> new ServiceErrorException(ERR_NOT_FOUND_PRODUCT));
 
         product.delete();
     }

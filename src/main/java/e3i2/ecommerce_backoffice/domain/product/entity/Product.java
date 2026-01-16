@@ -40,7 +40,7 @@ public class Product extends Base {
     private Boolean deleted = false;
     private LocalDateTime deletedAt;
 
-    public static Product regist(Admin admin, String productName, ProductCategory category, Long price, Long quantity, ProductStatus status) {
+    public static Product register(Admin admin, String productName, ProductCategory category, Long price, Long quantity, ProductStatus status) {
         Product product = new Product();
         product.admin = admin;
         product.productName = productName;

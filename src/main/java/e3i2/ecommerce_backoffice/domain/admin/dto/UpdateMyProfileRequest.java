@@ -5,15 +5,17 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 
+import static e3i2.ecommerce_backoffice.common.util.Constants.*;
+
 @Getter
 public class UpdateMyProfileRequest {
-    @NotBlank(message = "이름은 필수값입니다")
+    @NotBlank(message = MSG_NAME_BLANK_ERR)
     private String adminName;
-    @Email(message = "유효하지 않은 이메일 형식입니다")
+    @Email(message = MSG_EMAIL_PATTERN_ERR)
     private String email;
     @Pattern(
             regexp = "^010-\\d{4}-\\d{4}$",
-            message = "유효하지 않은 전화번호 형식입니다"
+            message = MSG_PHONE_PATTERN_ERR
     )
     private String phone;
 }

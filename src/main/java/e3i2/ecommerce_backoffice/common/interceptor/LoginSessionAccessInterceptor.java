@@ -1,6 +1,7 @@
 package e3i2.ecommerce_backoffice.common.interceptor;
 
 import e3i2.ecommerce_backoffice.common.annotation.LoginSessionCheck;
+import e3i2.ecommerce_backoffice.common.exception.ServiceErrorException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import static e3i2.ecommerce_backoffice.common.exception.ErrorEnum.ERR_NOT_LOGIN_ACCESS;
 import static e3i2.ecommerce_backoffice.common.util.Constants.ADMIN_SESSION_NAME;
 
 // TODO Stage 반영시 주석 삭제
@@ -30,7 +32,7 @@ public class LoginSessionAccessInterceptor implements HandlerInterceptor {
             // 어노테이션이 있으면 세션 체크
             HttpSession session = request.getSession(false);
             if (session == null || session.getAttribute(ADMIN_SESSION_NAME) == null) {
-                throw new IllegalStateException("로그인 되지 않은 상태의 접근 입니다");
+                throw new ServiceErrorException(ERR_NOT_LOGIN_ACCESS);
             }
 
             // 세션 체크 후 통과

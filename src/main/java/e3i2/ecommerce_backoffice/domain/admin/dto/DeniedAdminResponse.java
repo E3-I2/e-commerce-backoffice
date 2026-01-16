@@ -31,7 +31,7 @@ public class DeniedAdminResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDateTime deniedAt;
 
-    public static DeniedAdminResponse regist(
+    public static DeniedAdminResponse register(
             Long adminId,
             String adminName,
             String email,
