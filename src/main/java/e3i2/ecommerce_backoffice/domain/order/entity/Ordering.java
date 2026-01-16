@@ -22,7 +22,10 @@ public class Ordering extends Base {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
+
+    @Column(nullable = false)
     private String orderNo;
+
     @Enumerated(EnumType.STRING)
     private OrderingStatus orderStatus;
     private Long orderTotalPrice;
@@ -70,5 +73,16 @@ public class Ordering extends Base {
         ordering.admin = admin;
 
         return ordering;
+    }
+
+    public void cancel(String cancelReason) {
+        this.orderStatus = OrderingStatus.CANCELLED;
+        this.cancelReason = cancelReason;
+        this.deleted = true;
+        this.deletedAt = LocalDateTime.now();
+    }
+
+    public void changeStatus(OrderingStatus nextStatus) {
+        this.orderStatus = nextStatus;
     }
 }

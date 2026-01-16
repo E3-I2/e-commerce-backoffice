@@ -4,13 +4,11 @@ import e3i2.ecommerce_backoffice.common.dto.session.SessionAdmin;
 import e3i2.ecommerce_backoffice.common.exception.ErrorEnum;
 import e3i2.ecommerce_backoffice.common.exception.ServiceErrorException;
 import e3i2.ecommerce_backoffice.common.util.pagination.ItemsWithPagination;
-import e3i2.ecommerce_backoffice.domain.order.dto.SearchOrderingResponse;
+import e3i2.ecommerce_backoffice.domain.order.dto.*;
 import e3i2.ecommerce_backoffice.domain.admin.entity.Admin;
 import e3i2.ecommerce_backoffice.domain.admin.repository.AdminRepository;
 import e3i2.ecommerce_backoffice.domain.customer.entity.Customer;
 import e3i2.ecommerce_backoffice.domain.customer.repository.CustomerRepository;
-import e3i2.ecommerce_backoffice.domain.order.dto.CreateOrderingRequest;
-import e3i2.ecommerce_backoffice.domain.order.dto.CreateOrderingResponse;
 import e3i2.ecommerce_backoffice.domain.order.entity.Ordering;
 import e3i2.ecommerce_backoffice.domain.order.entity.OrderingSeq;
 import e3i2.ecommerce_backoffice.domain.order.entity.OrderingStatus;
@@ -157,5 +155,92 @@ public class OrderingService {
                 order.getAdmin().getAdminName(),
                 order.getAdmin().getRole()
         );
+    }
+
+    @Transactional
+    public ChangeOrderingStatusResponse updateStatusOrdering(Long orderId, ChangeOrderingStatusRequest request, SessionAdmin sessionAdmin) {
+        Ordering ordering = orderingRepository.findById(orderId).orElseThrow(
+                () -> new ServiceErrorException(ERR_NOT_FOUND_ORDER)
+        );
+
+        OrderingStatus current = ordering.getOrderStatus();
+        OrderingStatus next = request.getStatus();
+
+
+        //배송완료 상태는 변경 불가
+        if (current == OrderingStatus.DELIVERED) {
+            throw new ServiceErrorException(ERR_ORDER_CHANGE_FORBIDDEN);
+        }
+
+        //준비 중 -> 배송 중 -> 배송 완료 순으로만 상태 전이 가능
+        if (!isValidNextStatus(current, next)) {
+            throw new ServiceErrorException(ERR_ORDER_CHANGE_FORBIDDEN);
+        }
+
+        ordering.changeStatus(next);
+
+        return ChangeOrderingStatusResponse.register(
+                ordering.getOrderId(),
+                ordering.getOrderNo(),
+                ordering.getCustomer().getCustomerId(),
+                ordering.getCustomer().getCustomerName(),
+                ordering.getCustomer().getCustomerName(),
+                ordering.getProduct().getProductId(),
+                ordering.getProduct().getProductName(),
+                ordering.getOrderQuantity(),
+                ordering.getOrderTotalPrice(),
+                ordering.getCreatedAt(),
+                ordering.getOrderStatus()
+        );
+    }
+
+    @Transactional
+    public CancelOrderingResponse cancelOrdering(Long orderId, SessionAdmin sessionAdmin, CancelOrderingRequest request) {
+        Ordering ordering = orderingRepository.findById(orderId).orElseThrow(
+                () -> new ServiceErrorException(ERR_NOT_FOUND_ORDER)
+        );
+        OrderingStatus current = ordering.getOrderStatus();
+        if (current == OrderingStatus.DELIVERED) {
+            throw new ServiceErrorException(ERR_ORDER_CHANGE_FORBIDDEN);
+        }
+
+        // 이미 취소된 주문
+        if (current == OrderingStatus.CANCELLED) {
+            throw new ServiceErrorException(ERR_ORDER_ALREADY_CANCELLED);
+        }
+
+        ordering.cancel(request.getCancelReason());
+
+        //취소 수량만큼 재고 증가
+        Product product = ordering.getProduct();
+        product.restoreStock(ordering.getOrderQuantity());
+
+        return CancelOrderingResponse.register(
+                ordering.getOrderId(),
+                ordering.getOrderNo(),
+                ordering.getCustomer().getCustomerId(),
+                ordering.getCustomer().getCustomerName(),
+                ordering.getCustomer().getCustomerName(),
+                ordering.getProduct().getProductId(),
+                ordering.getProduct().getProductName(),
+                ordering.getOrderQuantity(),
+                ordering.getOrderTotalPrice(),
+                ordering.getCreatedAt(),
+                ordering.getOrderStatus(),
+                ordering.getCancelReason()
+        );
+    }
+
+    // 상태 전이 검증 메서드 (준비중 → 배송중 → 배송완료)
+    private boolean isValidNextStatus(OrderingStatus current, OrderingStatus next) {
+        if (current == OrderingStatus.PREPARING) {
+            return next == OrderingStatus.SHIPPING;
+        }
+
+        if (current == OrderingStatus.SHIPPING) {
+            return next == OrderingStatus.DELIVERED;
+        }
+
+        return false;
     }
 }

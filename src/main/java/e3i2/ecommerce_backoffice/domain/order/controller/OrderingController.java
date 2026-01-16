@@ -3,9 +3,7 @@ package e3i2.ecommerce_backoffice.domain.order.controller;
 import e3i2.ecommerce_backoffice.common.annotation.LoginSessionCheck;
 import e3i2.ecommerce_backoffice.common.dto.response.DataResponse;
 import e3i2.ecommerce_backoffice.common.dto.session.SessionAdmin;
-import e3i2.ecommerce_backoffice.domain.order.dto.CreateOrderingRequest;
-import e3i2.ecommerce_backoffice.domain.order.dto.CreateOrderingResponse;
-import e3i2.ecommerce_backoffice.domain.order.dto.SearchOrderingResponse;
+import e3i2.ecommerce_backoffice.domain.order.dto.*;
 import e3i2.ecommerce_backoffice.domain.order.service.OrderingService;
 import jakarta.validation.Valid;
 import e3i2.ecommerce_backoffice.common.util.pagination.ItemsWithPagination;
@@ -59,4 +57,25 @@ public class OrderingController {
                 orderingService.searchOrdering(orderId)));
     }
 
+    //주문 상태 수정
+    @PutMapping("/{orderId}/status")
+    @LoginSessionCheck
+    public ResponseEntity<DataResponse<ChangeOrderingStatusResponse>> changeOrderingStatus(
+            @PathVariable Long orderId,
+            @Valid @RequestBody ChangeOrderingStatusRequest request,
+            @SessionAttribute(value = ADMIN_SESSION_NAME) SessionAdmin sessionAdmin
+    ) {
+        return ResponseEntity.status(HttpStatus.OK).body(DataResponse.success(HttpStatus.OK.name(), orderingService.updateStatusOrdering(orderId, request, sessionAdmin)));
+    }
+
+    //주문 취소
+    @PutMapping("/{orderId}/cancel")
+    @LoginSessionCheck
+    public ResponseEntity<DataResponse<CancelOrderingResponse>> cancelOrdering(
+            @PathVariable Long orderId,
+            @RequestBody CancelOrderingRequest request,
+            @SessionAttribute(value = ADMIN_SESSION_NAME) SessionAdmin sessionAdmin
+    ) {
+        return ResponseEntity.status(HttpStatus.OK).body(DataResponse.success(HttpStatus.OK.name(), orderingService.cancelOrdering(orderId, sessionAdmin, request)));
+    }
 }
