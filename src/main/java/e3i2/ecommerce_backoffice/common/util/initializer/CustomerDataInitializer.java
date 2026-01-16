@@ -5,12 +5,16 @@ import e3i2.ecommerce_backoffice.domain.customer.entity.CustomerStatus;
 import e3i2.ecommerce_backoffice.domain.customer.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.NonNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 
 @Component
@@ -24,12 +28,16 @@ public class CustomerDataInitializer implements ApplicationRunner {
     @Override
     @Transactional
     public void run(@NonNull ApplicationArguments args) {
-        if (customerRepository.count() > 0) {
+        if(customerRepository.count() > 0) {
             return;
         }
 
         String[] customerName = {"강하윤", "송지호", "정유미", "홍예준", "문채원", "천수현", "강준규", "한서연", "최은우", "최원빈", "박서준", "이영희", "이서아", "채아윤", "최수진", "백하준", "유하린", "허지호", "오수아", "강태우"};
         String[] email = {"hayoon@example.com", "jiho@example.com", "yumi@example.com", "yejun@example.com", "chaewon@example.com", "soohyun@example.com", "junkyu@example.com", "seoyeon@example.com", "eunwoo@example.com", "wonbin@example.com", "seojoon@example.com", "younghee@example.com", "seoa@example.com", "ayoon@example.com", "sujin@example.com", "hajun@example.com", "harin@example.com", "jiho2@example.com", "sua@example.com", "taewoo@example.com"};
+        Long[] totalOrders = ThreadLocalRandom.current().longs(20, 0, 6).boxed().toArray(Long[]::new);
+        BigInteger[] totalSpent = Arrays.stream(totalOrders).map(
+                count -> count == 0 ? BigInteger.ZERO : BigInteger.valueOf(ThreadLocalRandom.current().nextLong(1, 1001) * 100)
+        ).toArray(BigInteger[]::new);
         IntStream.rangeClosed(1, 20).mapToObj(index -> Customer.register(
                 String.format(customerName[index - 1]),
                 String.format(email[index - 1]),
@@ -39,7 +47,9 @@ public class CustomerDataInitializer implements ApplicationRunner {
                     case 1 -> CustomerStatus.IN_ACT;
                     case 2 -> CustomerStatus.SUSPEND;
                     default -> CustomerStatus.ACT;
-                }
+                },
+                totalOrders[index - 1],
+                totalSpent[index - 1]
         )).forEach(customerRepository::save);
     }
 }

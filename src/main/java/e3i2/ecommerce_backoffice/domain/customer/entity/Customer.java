@@ -8,13 +8,14 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 @Getter
-@Entity@Table(uniqueConstraints = {
-        @UniqueConstraint(
-                name = "customer_unique_email"
-                , columnNames = {"email"})
+@Entity
+@Table(uniqueConstraints = {
+        @UniqueConstraint(name = "customer_unique_email", columnNames = {"email"})
+        , @UniqueConstraint(name = "customer_unique_phone", columnNames = {"phone"})
 })
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -31,22 +32,30 @@ public class Customer extends Base {
     private String customerName;
 
     @Pattern(regexp = "^010-\\d{4}-\\d{4}$")
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String phone;
 
     @Enumerated(EnumType.STRING)
     private CustomerStatus customerStatus;
 
     @Column(nullable = false)
+    private Long totalOrders;
+
+    @Column(nullable = false)
+    private BigInteger totalSpent;
+
+    @Column(nullable = false)
     private Boolean deleted;
     private LocalDateTime deletedAt;
 
-    public static Customer register(String customerName, String email, String phone, CustomerStatus customerStatus) {
+    public static Customer register(String customerName, String email, String phone, CustomerStatus customerStatus,  Long totalOrders, BigInteger totalSpent) {
         Customer customer = new Customer();
         customer.customerName = customerName;
         customer.email = email;
         customer.phone = phone;
         customer.customerStatus = customerStatus;
+        customer.totalOrders = totalOrders;
+        customer.totalSpent = totalSpent;
         customer.deleted = false;
 
         return customer;

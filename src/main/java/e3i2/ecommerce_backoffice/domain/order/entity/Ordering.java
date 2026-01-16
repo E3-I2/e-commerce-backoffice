@@ -13,21 +13,22 @@ import java.time.LocalDateTime;
 
 @Getter
 @Entity
-@Table(uniqueConstraints = {
-        @UniqueConstraint(
-                name = "order_unique_orderNo"
-                , columnNames = {"orderNo"})
+@Table(name = "ordering"
+        , uniqueConstraints = {
+        @UniqueConstraint(name = "ordering_unique_orderNo", columnNames = {"order_no"})
 })
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Order extends Base {
+public class Ordering extends Base {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
+    @Column(nullable = false)
     private String orderNo;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
-    private Long orderAmount;
+    private OrderingStatus orderStatus;
+    private Long orderTotalPrice;
+    private Long orderQuantity;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "product_id", nullable = false, foreignKey = @ForeignKey(name = "fk_product_id", value = ConstraintMode.NO_CONSTRAINT))
@@ -58,5 +59,4 @@ public class Order extends Base {
         deleted = false;
         deletedAt = null;
     }
-
 }
