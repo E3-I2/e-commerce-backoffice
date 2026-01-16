@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface OrderRepository extends JpaRepository<Ordering, Long> {
+public interface OrderingRepository extends JpaRepository<Ordering, Long> {
     @Query("""
         SELECT o
         FROM Ordering o

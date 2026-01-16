@@ -2,10 +2,10 @@ package e3i2.ecommerce_backoffice.domain.order.service;
 
 import e3i2.ecommerce_backoffice.common.exception.ServiceErrorException;
 import e3i2.ecommerce_backoffice.common.util.pagination.ItemsWithPagination;
-import e3i2.ecommerce_backoffice.domain.order.dto.SearchOrderResponse;
+import e3i2.ecommerce_backoffice.domain.order.dto.SearchOrderingResponse;
 import e3i2.ecommerce_backoffice.domain.order.entity.Ordering;
 import e3i2.ecommerce_backoffice.domain.order.entity.OrderingStatus;
-import e3i2.ecommerce_backoffice.domain.order.repository.OrderRepository;
+import e3i2.ecommerce_backoffice.domain.order.repository.OrderingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,14 +20,14 @@ import static e3i2.ecommerce_backoffice.common.exception.ErrorEnum.ERR_NOT_FOUND
 
 @Service
 @RequiredArgsConstructor
-public class OrderService {
-    private final OrderRepository orderRepository;
+public class OrderingService {
+    private final OrderingRepository orderingRepository;
 
     // 주문 리스트 통합 조회
     @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-    public ItemsWithPagination<List<SearchOrderResponse>> searchAllOrder(
+    public ItemsWithPagination<List<SearchOrderingResponse>> searchAllOrdering(
             String orderNo, String customerName, OrderingStatus orderStatus, Integer page, Integer limit, String sortBy, String sortOrder) {
-        Page<Ordering> orders = orderRepository.findOrders(
+        Page<Ordering> orders = orderingRepository.findOrders(
                 orderNo,
                 customerName,
                 orderStatus,
@@ -37,7 +37,7 @@ public class OrderService {
                 )
         );
 
-        List<SearchOrderResponse> items = orders.stream().map(order -> SearchOrderResponse.register(
+        List<SearchOrderingResponse> items = orders.stream().map(order -> SearchOrderingResponse.register(
                 order.getOrderId(),
                 order.getOrderNo(),
                 order.getCustomer().getCustomerId(),
@@ -58,10 +58,10 @@ public class OrderService {
 
     // 주문 상세 조회
     @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-    public SearchOrderResponse searchOrder(Long orderId) {
-        Ordering order = orderRepository.findByOrderIdAndDeletedFalse(orderId).
+    public SearchOrderingResponse searchOrdering(Long orderId) {
+        Ordering order = orderingRepository.findByOrderIdAndDeletedFalse(orderId).
                 orElseThrow(() -> new ServiceErrorException(ERR_NOT_FOUND_ORDER));
-        return SearchOrderResponse.register(
+        return SearchOrderingResponse.register(
                 order.getOrderId(),
                 order.getOrderNo(),
                 order.getCustomer().getCustomerId(),
