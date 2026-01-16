@@ -34,7 +34,7 @@ public class OrderingController {
     }
 
     //주문 취소
-    @PutMapping("/{orderId/cancel}")
+    @PutMapping("/{orderId}/cancel")
     @LoginSessionCheck
     public ResponseEntity<DataResponse<CancelOrderingResponse>> cancelOrdering(
         @PathVariable Long orderId,
