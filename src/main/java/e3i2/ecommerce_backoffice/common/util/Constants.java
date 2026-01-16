@@ -10,6 +10,7 @@ public class Constants {
     public static final String MSG_LOGOUT_MSG = "로그아웃 되었습니다";
     public static final String MSG_DELETE_ADMIN_ACCOUNT = "관리자가 삭제 되었습니다";
     public static final String MSG_DELETE_CUSTOMER_ACCOUNT = "고객이 삭제 되었습니다";
+    public static final String MSG_DELETE_REVIEW_ACCOUNT = "리뷰가 삭제 되었습니다";
     public static final String MSG_CHANGE_PASSWORD_SUCCESS = "비밀번호가 성공적으로 변경 되었습니다";
     public static final String MSG_ADMIN_STATUS_NOT_WAIT = "해당 계정은 승인 대기 상태가 아닙니다";
     public static final String MSG_LOGOUT_DUPLICATED = "이미 로그아웃 된 상태입니다";
