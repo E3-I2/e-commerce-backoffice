@@ -2,7 +2,6 @@ package e3i2.ecommerce_backoffice.domain.review.controller;
 
 import e3i2.ecommerce_backoffice.common.dto.response.DataResponse;
 import e3i2.ecommerce_backoffice.common.dto.response.MessageResponse;
-import e3i2.ecommerce_backoffice.domain.review.dto.GetReviewResponse;
 import e3i2.ecommerce_backoffice.domain.review.service.ReviewService;
 import e3i2.ecommerce_backoffice.common.annotation.LoginSessionCheck;
 import e3i2.ecommerce_backoffice.common.util.pagination.ItemsWithPagination;
@@ -49,11 +48,11 @@ public class ReviewController {
     }
 
     @GetMapping("/api/reviews/{reviewId}")
-    public ResponseEntity<DataResponse<GetReviewResponse>> getOne(@PathVariable Long reviewId) {
+    public ResponseEntity<DataResponse<SearchReviewListResponse>> getOne(@PathVariable Long reviewId) {
         return ResponseEntity.ok(DataResponse.success(HttpStatus.OK.name(), reviewService.findOne(reviewId)));
     }
 
-    @DeleteMapping("/api/admins/reviews/{reviewId}")
+    @DeleteMapping("/api/reviews/{reviewId}")
     public ResponseEntity<MessageResponse<Void>> delete(@PathVariable Long reviewId) {
         reviewService.delete(reviewId);
         return ResponseEntity.ok(MessageResponse.success(HttpStatus.OK.name(), MSG_DELETE_REVIEW_ACCOUNT));
