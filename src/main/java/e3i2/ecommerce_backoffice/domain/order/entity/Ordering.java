@@ -4,6 +4,8 @@ import e3i2.ecommerce_backoffice.common.entity.Base;
 import e3i2.ecommerce_backoffice.domain.admin.entity.Admin;
 import e3i2.ecommerce_backoffice.domain.customer.entity.Customer;
 import e3i2.ecommerce_backoffice.domain.product.entity.Product;
+import e3i2.ecommerce_backoffice.domain.product.entity.ProductCategory;
+import e3i2.ecommerce_backoffice.domain.product.entity.ProductStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -50,6 +52,29 @@ public class Ordering extends Base {
     @Column(nullable = false)
     private boolean deleted = false;
 
+    public static Ordering register(
+            String orderNo,
+            Product product,
+            Customer customer,
+            Admin admin,
+            Long orderQuantity,
+            Long orderTotalPrice
+    ) {
+        Ordering ordering = new Ordering();
+
+        ordering.orderNo = orderNo;
+        ordering.product = product;
+        ordering.customer = customer;
+        ordering.admin = admin;
+        ordering.orderQuantity = orderQuantity;
+        ordering.orderTotalPrice = orderTotalPrice;
+        ordering.orderStatus = OrderingStatus.PREPARING;
+        ordering.orderAt = LocalDateTime.now();
+        ordering.deleted = false;
+
+        return ordering;
+    }
+
     public void delete() {
         deleted = true;
         deletedAt = LocalDateTime.now();
@@ -58,5 +83,11 @@ public class Ordering extends Base {
     public void restore() {
         deleted = false;
         deletedAt = null;
+    }
+
+
+
+    public void changeStatus(OrderingStatus nextStatus) {
+        this.orderStatus = nextStatus;
     }
 }
