@@ -3,7 +3,7 @@ package e3i2.ecommerce_backoffice.domain.order.controller;
 import e3i2.ecommerce_backoffice.common.annotation.LoginSessionCheck;
 import e3i2.ecommerce_backoffice.common.dto.response.DataResponse;
 import e3i2.ecommerce_backoffice.common.util.pagination.ItemsWithPagination;
-import e3i2.ecommerce_backoffice.domain.order.dto.SearchAllOrderResponse;
+import e3i2.ecommerce_backoffice.domain.order.dto.SearchOrderResponse;
 import e3i2.ecommerce_backoffice.domain.order.entity.OrderingStatus;
 import e3i2.ecommerce_backoffice.domain.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -14,14 +14,14 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/admin/orders")
+@RequestMapping("/api/orders")
 public class OrderController {
     private final OrderService orderService;
 
     // 주문 리스트 통합 조회
     @GetMapping()
     @LoginSessionCheck
-    public ResponseEntity<DataResponse<ItemsWithPagination<List<SearchAllOrderResponse>>>> searchAllOrderResponse(
+    public ResponseEntity<DataResponse<ItemsWithPagination<List<SearchOrderResponse>>>> searchAllOrderResponse(
             @RequestParam(required = false) String orderNo,
             @RequestParam(required = false) String customerName,
             @RequestParam(required = false) OrderingStatus orderStatus,
@@ -33,6 +33,13 @@ public class OrderController {
     ) {
         return ResponseEntity.status(HttpStatus.OK).body(DataResponse.success(HttpStatus.OK.name(),
                 orderService.searchAllOrder(orderNo, customerName, orderStatus, page, limit, sortBy, sortOrder)));
+    }
+
+    // 주문 리스트 상세 조회
+    @GetMapping("/{orderId}") ResponseEntity<DataResponse<SearchOrderResponse>> searchOrderResponse(
+            @PathVariable Long orderId) {
+        return ResponseEntity.status(HttpStatus.OK).body(DataResponse.success(HttpStatus.OK.name(),
+                orderService.searchOrder(orderId)));
     }
 
 }

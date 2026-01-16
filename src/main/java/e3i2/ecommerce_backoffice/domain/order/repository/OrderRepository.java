@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface OrderRepository extends JpaRepository<Ordering, Long> {
     @Query("""
         SELECT o
@@ -24,4 +26,6 @@ public interface OrderRepository extends JpaRepository<Ordering, Long> {
             @Param("orderStatus") OrderingStatus orderStatus,
             Pageable pageable
     );
+
+    Optional<Ordering> findByOrderIdAndDeletedFalse(Long orderId);
 }
