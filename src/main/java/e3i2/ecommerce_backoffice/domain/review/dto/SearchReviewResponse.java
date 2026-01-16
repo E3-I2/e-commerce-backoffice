@@ -1,34 +1,76 @@
 package e3i2.ecommerce_backoffice.domain.review.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
-@JsonPropertyOrder({"reviewId", "orderId", "productId", "customerId", "customerName", "customerEmail", "productName", "rating", "content", "createdAt"})
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@JsonPropertyOrder({
+        "id",
+        "orderId",
+        "productId",
+        "customerId",
+        "customer",
+        "customerEmail",
+        "product",
+        "rating",
+        "content",
+        "createdAt"
+})
 public class SearchReviewResponse {
-    private final Long reviewId;
-    private final Long orderId;
-    private final Long productId;
-    private final Long customerId;
-    private final String customerName;
-    private final String customerEmail;
-    private final String productName;
-    private final Integer rating;
-    private final String content;
-    private final LocalDateTime createdAt;
+    @JsonProperty("id")
+    private Long reviewId;
 
-    public SearchReviewResponse(Long reviewId, Long orderId, Long productId, Long customerId, String customerName, String customerEmail, String productName, Integer rating, String content, LocalDateTime createdAt) {
-        this.reviewId = reviewId;
-        this.orderId = orderId;
-        this.productId = productId;
-        this.customerId = customerId;
-        this.customerName = customerName;
-        this.customerEmail = customerEmail;
-        this.productName = productName;
-        this.rating = rating;
-        this.content = content;
-        this.createdAt = createdAt;
+    private Long orderId;
+    private Long productId;
+    private Long customerId;
+
+    @JsonProperty("customer")
+    private String customerName;
+
+    private String customerEmail;
+
+    @JsonProperty("product")
+    private String productName;
+
+    private Integer rating;
+
+    @JsonProperty("comment")
+    private String content;
+
+    @JsonProperty("date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDateTime createdAt;
+
+    public static SearchReviewResponse register(
+            Long reviewId,
+            Long orderId,
+            Long productId,
+            Long customerId,
+            String customerName,
+            String customerEmail,
+            String productName,
+            Integer rating,
+            String content,
+            LocalDateTime createdAt
+    ) {
+        SearchReviewResponse response = new SearchReviewResponse();
+        response.reviewId = reviewId;
+        response.orderId = orderId;
+        response.productId = productId;
+        response.customerId = customerId;
+        response.customerName = customerName;
+        response.customerEmail = customerEmail;
+        response.productName = productName;
+        response.rating = rating;
+        response.content = content;
+        response.createdAt = createdAt;
+        return response;
     }
 }
