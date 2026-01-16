@@ -1,10 +1,12 @@
 package e3i2.ecommerce_backoffice.domain.review.dto;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
+@JsonPropertyOrder({"reviewId", "orderId", "productId", "customerId", "customerName", "customerEmail", "productName", "rating", "content", "createdAt"})
 public class GetReviewResponse {
     private final Long reviewId;
     private final Long orderId;

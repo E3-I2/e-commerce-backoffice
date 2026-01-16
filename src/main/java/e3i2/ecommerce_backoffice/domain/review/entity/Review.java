@@ -2,6 +2,7 @@ package e3i2.ecommerce_backoffice.domain.review.entity;
 
 import e3i2.ecommerce_backoffice.common.entity.Base;
 import e3i2.ecommerce_backoffice.domain.customer.entity.Customer;
+import e3i2.ecommerce_backoffice.domain.order.entity.Ordering;
 import e3i2.ecommerce_backoffice.domain.product.entity.Product;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -31,7 +32,7 @@ public class Review extends Base {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "order_id", nullable = false, foreignKey = @ForeignKey(name = "fk_order_id", value = ConstraintMode.NO_CONSTRAINT))
-    private Order order;
+    private Ordering order;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "customer_id", nullable = false, foreignKey = @ForeignKey(name = "fk_customer_id", value = ConstraintMode.NO_CONSTRAINT))
@@ -42,7 +43,7 @@ public class Review extends Base {
     private Product product;
 
     public static Review register(
-            String content, Integer rating, Order order, Customer customer, Product product
+            String content, Integer rating, Ordering order, Customer customer, Product product
     ){
         Review review = new Review();
         review.content = content;

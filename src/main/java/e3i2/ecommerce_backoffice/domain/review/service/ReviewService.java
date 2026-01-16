@@ -1,5 +1,7 @@
 package e3i2.ecommerce_backoffice.domain.review.service;
 
+import e3i2.ecommerce_backoffice.common.exception.ErrorEnum;
+import e3i2.ecommerce_backoffice.common.exception.ServiceErrorException;
 import e3i2.ecommerce_backoffice.domain.review.dto.GetReviewResponse;
 import e3i2.ecommerce_backoffice.domain.review.entity.Review;
 import e3i2.ecommerce_backoffice.domain.review.repository.ReviewRepositorty;
@@ -15,7 +17,7 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public GetReviewResponse findOne(Long reviewId) {
         Review review = reviewRepositorty.findById(reviewId).orElseThrow(
-                () -> new IllegalArgumentException("Review not found with id: " + reviewId) // 새로운 전역 예외 추가 필요
+                () -> new ServiceErrorException(ErrorEnum.ERR_NOT_FOUND_REVIEW) // 새로운 전역 예외 추가 필요
         );
         return new GetReviewResponse(
                 review.getReviewId(),
@@ -34,7 +36,7 @@ public class ReviewService {
     @Transactional
     public void delete(Long reviewId) {
         Review review = reviewRepositorty.findByReviewIdAndDeletedFalse(reviewId).orElseThrow(
-                () -> new IllegalArgumentException("Review not found with id: " + reviewId)
+                () -> new ServiceErrorException(ErrorEnum.ERR_NOT_FOUND_REVIEW)
         );
         review.delete();
     }
