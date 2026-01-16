@@ -22,9 +22,7 @@ public class Ordering extends Base {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
-    @Column(nullable = false)
     private String orderNo;
-
     @Enumerated(EnumType.STRING)
     private OrderingStatus orderStatus;
     private Long orderTotalPrice;
@@ -58,5 +56,19 @@ public class Ordering extends Base {
     public void restore() {
         deleted = false;
         deletedAt = null;
+    }
+
+    public static Ordering register(String orderNo, Long orderQuantity, Product product, Customer customer, Admin admin) {
+        Ordering ordering = new Ordering();
+        ordering.orderNo = orderNo;
+        ordering.orderAt = LocalDateTime.now();
+        ordering.orderStatus = OrderingStatus.PREPARING;
+        ordering.orderQuantity = orderQuantity;
+        ordering.orderTotalPrice = product.getPrice() * orderQuantity;
+        ordering.product = product;
+        ordering.customer = customer;
+        ordering.admin = admin;
+
+        return ordering;
     }
 }

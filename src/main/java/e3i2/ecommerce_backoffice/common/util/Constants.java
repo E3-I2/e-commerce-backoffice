@@ -53,6 +53,13 @@ public class Constants {
     public static final String MSG_NOT_LOGIN_ACCESS = "로그인 후 이용 가능합니다";
     public static final String MSG_DENY_CUSTOMER_ACCOUNT_DELETE = "주문 내역이 존재하여 삭제할 수 없습니다";
     public static final String MSG_NOT_VALID_VALUE = "유효하지 않은 값이 입력되었습니다";
+    public static final String MSG_ORDER_CUSTOMER_ID_NULL_ERR = "주문 고객 아이디는 필수입니다";
+    public static final String MSG_ORDER_PRODUCT_ID_NULL_ERR = "주문 상품 아이디는 필수입니다";
+    public static final String MSG_ORDER_QUANTITY_NULL_ERR = "상품의 주문수량은 필수입니다";
+    public static final String MSG_ORDER_QUANTITY_MAX_ERR = "상품의 주문수량이 한도를 넘었습니다";
+    public static final String MSG_ORDER_QUANTITY_MIN_ERR = "상품의 주문수량은 1개 이상 이여야 합니다";
+    public static final String MSG_ORDER_TO_DISCONTINUE_ERR = "단종된 상품은 주문할 수 없습니다";
+    public static final String MSG_ORDER_TO_SOLD_OUT_ERR = "품절된 상품은 주문할 수 없습니다";
 }
 
 
