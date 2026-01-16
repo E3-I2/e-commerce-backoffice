@@ -39,10 +39,10 @@ public class AdminService {
         }
 
         String encodePassword = passwordEncoder.encode(request.getPassword());
-        Admin admin = Admin.regist(request.getEmail(), encodePassword, request.getAdminName(), request.getPhone(), request.getRole(), AdminStatus.WAIT, request.getRequestMessage());
+        Admin admin = Admin.register(request.getEmail(), encodePassword, request.getAdminName(), request.getPhone(), request.getRole(), AdminStatus.WAIT, request.getRequestMessage());
         Admin saveAdmin = adminRepository.save(admin);
 
-        return SignUpResponse.regist(
+        return SignUpResponse.register(
                 saveAdmin.getAdminId(),
                 saveAdmin.getAdminName(),
                 saveAdmin.getEmail(),
@@ -109,7 +109,7 @@ public class AdminService {
 
         admin.accept();
 
-        return AcceptAdminResponse.regist(
+        return AcceptAdminResponse.register(
                 admin.getAdminId(),
                 admin.getAdminName(),
                 admin.getEmail(),
@@ -139,7 +139,7 @@ public class AdminService {
 
         admin.deny(request.getDeniedReason());
 
-        return DeniedAdminResponse.regist(
+        return DeniedAdminResponse.register(
                 admin.getAdminId(),
                 admin.getAdminName(),
                 admin.getEmail(),
@@ -192,7 +192,7 @@ public class AdminService {
                         deniedReason = a.getDeniedReason();
                     }
 
-                    return SearchAdminDetailResponse.regist(
+                    return SearchAdminDetailResponse.register(
                             a.getAdminId(),
                             a.getAdminName(),
                             a.getEmail(),
@@ -208,7 +208,7 @@ public class AdminService {
                 })
                 .toList();
 
-        return ItemsWithPagination.register(items, page, limit, admins.getTotalElements());
+        return ItemsWithPagination.registerer(items, page, limit, admins.getTotalElements());
     }
 
     // 관리자 상세 조회
@@ -236,7 +236,7 @@ public class AdminService {
             deniedReason = admin.getDeniedReason();
         }
 
-        return SearchAdminDetailResponse.regist(
+        return SearchAdminDetailResponse.register(
                 admin.getAdminId(),
                 admin.getAdminName(),
                 admin.getEmail(),
@@ -270,7 +270,7 @@ public class AdminService {
 
         admin.update(request.getAdminName(), request.getEmail(), request.getPhone());
 
-        return UpdateAdminResponse.regist(
+        return UpdateAdminResponse.register(
                 admin.getAdminId(),
                 admin.getAdminName(),
                 admin.getEmail(),
@@ -309,7 +309,7 @@ public class AdminService {
                 () -> new ServiceErrorException(ERR_NOT_FOUND_ADMIN)
         );
 
-        return GetMyProfileResponse.regist(
+        return GetMyProfileResponse.register(
                 admin.getAdminId(),
                 admin.getAdminName(),
                 admin.getEmail(),
@@ -339,7 +339,7 @@ public class AdminService {
                 request.getPhone()
         );
 
-        return UpdateMyProfileResponse.regist(
+        return UpdateMyProfileResponse.register(
                 admin.getAdminId(),
                 admin.getAdminName(),
                 admin.getEmail(),
@@ -384,7 +384,7 @@ public class AdminService {
 
         admin.changeAdminRole(request.getRole());
 
-        return ChangeAdminRoleResponse.regist(
+        return ChangeAdminRoleResponse.register(
                 admin.getAdminId(),
                 admin.getAdminName(),
                 admin.getEmail(),
@@ -410,7 +410,7 @@ public class AdminService {
 
         admin.changeAdminStatus(request.getStatus());
 
-        return ChangeAdminStatusResponse.regist(
+        return ChangeAdminStatusResponse.register(
                 admin.getAdminId(),
                 admin.getAdminName(),
                 admin.getEmail(),

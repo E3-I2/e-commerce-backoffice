@@ -52,7 +52,7 @@ public class Admin extends Base {
     @Column(length = 500)
     private String requestMessage;
 
-    public static Admin regist(String email, String password, String adminName, String phone, AdminRole role, AdminStatus status, String requestMessage) {
+    public static Admin register(String email, String password, String adminName, String phone, AdminRole role, AdminStatus status, String requestMessage) {
         Admin admin = new Admin();
         admin.email = email;
         admin.password = password;

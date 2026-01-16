@@ -36,7 +36,7 @@ public class ProductService {
     public CreateProductResponse createProduct(@Valid CreateProductRequest request, SessionAdmin sessionAdmin) {
         Admin admin = adminRepository.findById(sessionAdmin.getAdminId()).orElseThrow(() -> new ServiceErrorException(ERR_NOT_FOUND_ADMIN));
 
-        Product product = Product.regist(
+        Product product = Product.register(
                 admin
                 , request.getProductName()
                 , request.getCategory()
@@ -47,7 +47,7 @@ public class ProductService {
 
         Product saveProduct = productRepository.save(product);
 
-        return CreateProductResponse.regist(
+        return CreateProductResponse.register(
                 saveProduct.getProductId()
                 , saveProduct.getProductName()
                 , saveProduct.getCategory().getCategoryCode()
@@ -65,7 +65,7 @@ public class ProductService {
     public ItemsWithPagination<List<SearchProductResponse>> searchAllProduct(String productName, ProductCategory category, ProductStatus status, Integer page, Integer limit, String sortBy, String sortOrder) {
         Page<Product> products = productRepository.findProducts(productName, category, status, PageRequest.of(page - 1, limit, Sort.by(sortOrder.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy)));
 
-        List<SearchProductResponse> items = products.stream().map(product -> SearchProductResponse.regist(
+        List<SearchProductResponse> items = products.stream().map(product -> SearchProductResponse.register(
                 product.getProductId()
                 , product.getProductName()
                 , product.getCategory().getCategoryCode()
@@ -78,13 +78,13 @@ public class ProductService {
                 , product.getAdmin().getEmail()
         )).toList();
 
-        return ItemsWithPagination.register(items, page, limit, products.getTotalElements());
+        return ItemsWithPagination.registerer(items, page, limit, products.getTotalElements());
     }
 
     @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public SearchProductResponse searchProduct(Long productId) {
         Product product = productRepository.findByProductIdAndDeletedFalse(productId).orElseThrow(() -> new ServiceErrorException(ERR_NOT_FOUND_PRODUCT));
-        return SearchProductResponse.regist(
+        return SearchProductResponse.register(
                 product.getProductId()
                 , product.getProductName()
                 , product.getCategory().getCategoryCode()
@@ -105,7 +105,7 @@ public class ProductService {
 
         product.updateInfo(request.getProductName(), request.getCategory(), request.getPrice());
 
-        return UpdateInfoProductResponse.regist(
+        return UpdateInfoProductResponse.register(
                 product.getProductId()
                 , product.getProductName()
                 , product.getCategory().getCategoryCode()
@@ -126,7 +126,7 @@ public class ProductService {
 
         product.updateQuantity(request.getQuantity());
 
-        return UpdateQuantityProductResponse.regist(
+        return UpdateQuantityProductResponse.register(
                 product.getProductId()
                 , product.getProductName()
                 , product.getCategory().getCategoryCode()
@@ -147,7 +147,7 @@ public class ProductService {
 
         product.updateStatus(request.getStatus());
 
-        return UpdateStatusProductResponse.regist(
+        return UpdateStatusProductResponse.register(
                 product.getProductId()
                 , product.getProductName()
                 , product.getCategory().getCategoryCode()

@@ -29,7 +29,7 @@ public class ChangeAdminStatusResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDateTime deniedAt;
 
-    public static ChangeAdminStatusResponse regist(
+    public static ChangeAdminStatusResponse register(
             Long adminId,
             String adminName,
             String email,

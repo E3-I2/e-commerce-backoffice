@@ -25,7 +25,7 @@ public class SignUpResponse {
     private AdminStatus status;
     private String requestMessage;
 
-    public static SignUpResponse regist(
+    public static SignUpResponse register(
             Long adminId,
             String adminName,
             String email,

@@ -81,7 +81,7 @@ public class AdminController {
         SessionAdmin sessionAdmin = adminService.login(request);
         session.setAttribute(ADMIN_SESSION_NAME, sessionAdmin);
 
-        LoginResponse response = LoginResponse.regist(
+        LoginResponse response = LoginResponse.register(
                 sessionAdmin.getAdminId(),
                 sessionAdmin.getAdminName(),
                 sessionAdmin.getEmail(),

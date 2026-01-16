@@ -30,7 +30,7 @@ public class CustomerDataInitializer implements ApplicationRunner {
 
         String[] customerName = {"강하윤", "송지호", "정유미", "홍예준", "문채원", "천수현", "강준규", "한서연", "최은우", "최원빈", "박서준", "이영희", "이서아", "채아윤", "최수진", "백하준", "유하린", "허지호", "오수아", "강태우"};
         String[] email = {"hayoon@example.com", "jiho@example.com", "yumi@example.com", "yejun@example.com", "chaewon@example.com", "soohyun@example.com", "junkyu@example.com", "seoyeon@example.com", "eunwoo@example.com", "wonbin@example.com", "seojoon@example.com", "younghee@example.com", "seoa@example.com", "ayoon@example.com", "sujin@example.com", "hajun@example.com", "harin@example.com", "jiho2@example.com", "sua@example.com", "taewoo@example.com"};
-        IntStream.rangeClosed(1, 20).mapToObj(index -> Customer.regist(
+        IntStream.rangeClosed(1, 20).mapToObj(index -> Customer.register(
                 String.format(customerName[index - 1]),
                 String.format(email[index - 1]),
                 String.format("010-%04d-%04d", index, index),

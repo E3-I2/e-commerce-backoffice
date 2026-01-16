@@ -36,7 +36,7 @@ public class CustomerService {
                 customer.getCreatedAt()
         )).toList();
 
-        return ItemsWithPagination.register(items, page, limit, customers.getTotalElements());
+        return ItemsWithPagination.registerer(items, page, limit, customers.getTotalElements());
     }
 
     // 고객 상세 조회

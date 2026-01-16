@@ -55,7 +55,7 @@ public class SearchAdminDetailResponse {
     private String requestMessage;  // WAIT 상태일 때만
     private String deniedReason; // DENY 상태일 때만
 
-    public static SearchAdminDetailResponse regist(
+    public static SearchAdminDetailResponse register(
             Long adminId,
             String adminName,
             String email,

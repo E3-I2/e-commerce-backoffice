@@ -26,7 +26,7 @@ public class LoginResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDateTime acceptedAt;
 
-    public static LoginResponse regist(
+    public static LoginResponse register(
             Long adminId,
             String adminName,
             String email,

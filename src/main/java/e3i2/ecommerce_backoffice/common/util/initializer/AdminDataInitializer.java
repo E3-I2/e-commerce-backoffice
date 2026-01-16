@@ -28,7 +28,7 @@ public class AdminDataInitializer implements ApplicationRunner {
             return;
         }
 
-        Admin admin = Admin.regist(
+        Admin admin = Admin.register(
             "admin@test.com"
             , passwordEncoder.encode("test1234")
             ,"TEST_SUPER_ADMIN"

@@ -29,7 +29,7 @@ public class UpdateMyProfileResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDateTime deniedAt;
 
-    public static UpdateMyProfileResponse regist(
+    public static UpdateMyProfileResponse register(
             Long adminId,
             String adminName,
             String email,
