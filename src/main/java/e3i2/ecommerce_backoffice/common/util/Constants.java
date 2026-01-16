@@ -10,6 +10,7 @@ public class Constants {
     public static final String MSG_LOGOUT_MSG = "로그아웃 되었습니다";
     public static final String MSG_DELETE_ADMIN_ACCOUNT = "관리자가 삭제 되었습니다";
     public static final String MSG_DELETE_CUSTOMER_ACCOUNT = "고객이 삭제 되었습니다";
+    public static final String MSG_DELETE_REVIEW_ACCOUNT = "리뷰가 삭제 되었습니다";
     public static final String MSG_CHANGE_PASSWORD_SUCCESS = "비밀번호가 성공적으로 변경 되었습니다";
     public static final String MSG_ADMIN_STATUS_NOT_WAIT = "해당 계정은 승인 대기 상태가 아닙니다";
     public static final String MSG_LOGOUT_DUPLICATED = "이미 로그아웃 된 상태입니다";
@@ -53,6 +54,7 @@ public class Constants {
     public static final String MSG_NOT_LOGIN_ACCESS = "로그인 후 이용 가능합니다";
     public static final String MSG_DENY_CUSTOMER_ACCOUNT_DELETE = "주문 내역이 존재하여 삭제할 수 없습니다";
     public static final String MSG_NOT_VALID_VALUE = "유효하지 않은 값이 입력되었습니다";
+    public static final String MSG_NOT_FOUND_REVIEW = "존재하지 않는 리뷰 입니다";
 }
 
 
