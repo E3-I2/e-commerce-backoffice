@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
         "AdminName",
         "AdminRole"
 })
-public class GetAllOrderResponse {
+public class SearchAllOrderResponse {
     private Long id;
     private String orderNo;
     private Long customerId;
@@ -43,11 +43,11 @@ public class GetAllOrderResponse {
     private String AdminName;
     private AdminRole AdminRole;
 
-    public static GetAllOrderResponse register(
+    public static SearchAllOrderResponse register(
             Long id, String orderNo, Long customerId, String customerName, Long productId, String productName,
             Long quantity, Long amount, LocalDateTime orderAt, OrderingStatus orderStatus,
             Long AdminId, String AdminName, AdminRole AdminRole) {
-        GetAllOrderResponse response = new GetAllOrderResponse();
+        SearchAllOrderResponse response = new SearchAllOrderResponse();
         response.id = id;
         response.orderNo = orderNo;
         response.customerId = customerId;

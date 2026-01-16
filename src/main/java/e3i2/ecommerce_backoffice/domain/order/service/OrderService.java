@@ -1,7 +1,7 @@
 package e3i2.ecommerce_backoffice.domain.order.service;
 
 import e3i2.ecommerce_backoffice.common.util.pagination.ItemsWithPagination;
-import e3i2.ecommerce_backoffice.domain.order.dto.GetAllOrderResponse;
+import e3i2.ecommerce_backoffice.domain.order.dto.SearchAllOrderResponse;
 import e3i2.ecommerce_backoffice.domain.order.entity.Ordering;
 import e3i2.ecommerce_backoffice.domain.order.entity.OrderingStatus;
 import e3i2.ecommerce_backoffice.domain.order.repository.OrderRepository;
@@ -21,7 +21,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
     @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-    public ItemsWithPagination<List<GetAllOrderResponse>> getAllOrder(
+    public ItemsWithPagination<List<SearchAllOrderResponse>> searchAllOrder(
             String orderNo, String customerName, OrderingStatus orderStatus, Integer page, Integer limit, String sortBy, String sortOrder) {
         Page<Ordering> orders = orderRepository.findOrders(
                 orderNo,
@@ -33,7 +33,7 @@ public class OrderService {
                 )
         );
 
-        List<GetAllOrderResponse> items = orders.stream().map(order -> GetAllOrderResponse.register(
+        List<SearchAllOrderResponse> items = orders.stream().map(order -> SearchAllOrderResponse.register(
                 order.getOrderId(),
                 order.getOrderNo(),
                 order.getCustomer().getCustomerId(),
