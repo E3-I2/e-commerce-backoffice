@@ -5,7 +5,7 @@ import e3i2.ecommerce_backoffice.common.exception.ServiceErrorException;
 import e3i2.ecommerce_backoffice.common.util.pagination.ItemsWithPagination;
 import e3i2.ecommerce_backoffice.domain.review.dto.SearchReviewListResponse;
 import e3i2.ecommerce_backoffice.domain.review.entity.Review;
-import e3i2.ecommerce_backoffice.domain.review.repository.ReviewRepositorty;
+import e3i2.ecommerce_backoffice.domain.review.repository.ReviewRepository;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
-    private final ReviewRepositorty reviewRepositorty;
+    private final ReviewRepository reviewRepository;
 
     // 리뷰 리스트 조회
     @Transactional(readOnly = true)
@@ -34,7 +34,7 @@ public class ReviewService {
 
         String safeKeyword = (keyword == null || keyword.isBlank()) ? null : keyword;
 
-        Page<Review> reviews = reviewRepositorty.findReviews(safeKeyword, rating, pageable);
+        Page<Review> reviews = reviewRepository.findReviews(safeKeyword, rating, pageable);
 
         List<SearchReviewListResponse> items = reviews.getContent().stream()
                 .map(r -> SearchReviewListResponse.register(
@@ -75,7 +75,7 @@ public class ReviewService {
 
     @Transactional
     public void delete(Long reviewId) {
-        Review review = reviewRepositorty.findByReviewIdAndDeletedFalse(reviewId).orElseThrow(
+        Review review = reviewRepository.findByReviewIdAndDeletedFalse(reviewId).orElseThrow(
                 () -> new ServiceErrorException(ErrorEnum.ERR_NOT_FOUND_REVIEW)
         );
         review.delete();
