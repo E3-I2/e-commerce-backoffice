@@ -95,12 +95,16 @@ public class OrderingService {
         );
     }
 
-    //상태 전이 검증 메서드(준비중 -> 배송중 -> 배송완료 순으로만 진행되도록)
+    // 상태 전이 검증 메서드 (준비중 → 배송중 → 배송완료)
     private boolean isValidNextStatus(OrderingStatus current, OrderingStatus next) {
-        return switch (current) {
-            case PREPARING -> next == OrderingStatus.SHIPPING;
-            case SHIPPING -> next == OrderingStatus.DELIVERED;
-            default -> false;
-        };
+        if (current == OrderingStatus.PREPARING) {
+            return next == OrderingStatus.SHIPPING;
+        }
+
+        if (current == OrderingStatus.SHIPPING) {
+            return next == OrderingStatus.DELIVERED;
+        }
+
+        return false;
     }
 }
