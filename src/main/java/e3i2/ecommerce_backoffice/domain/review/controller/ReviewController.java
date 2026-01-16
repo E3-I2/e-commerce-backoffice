@@ -30,7 +30,7 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     // 리뷰 리스트 조회
-    @GetMapping("/api/admins/reviews")
+    @GetMapping("/api/reviews")
     @LoginSessionCheck
     public ResponseEntity<DataResponse<ItemsWithPagination<List<SearchReviewResponse>>>> getReviewList(
             @RequestParam(required = false) String keyword,
