@@ -29,4 +29,17 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     );
 
     Optional<Product> findByProductIdAndDeletedFalse(Long productId);
+
+
+    // 재고 부족 상품(1~5)
+    @Query("""
+        SELECT COUNT(p)
+        FROM Product p
+        WHERE p.deleted = false
+          AND p.quantity BETWEEN 1 AND 5
+    """)
+    long countLowStockProducts();
+
+    // 품절
+    long countByQuantityAndDeletedFalse(Long quantity);
 }
