@@ -26,7 +26,7 @@ import java.util.List;
         , "reviewSummary"
         , "recentReview"
 })
-public class SearchProductResponse {
+public class SearchProductDetailResponse {
     private Long id;
     private String productName;
     private String category;
@@ -41,12 +41,12 @@ public class SearchProductResponse {
     private SearchReviewSummaryResponse reviewSummary;
     private List<SearchReviewResponse> recentReview;
 
-    public static SearchProductResponse register(
+    public static SearchProductDetailResponse register(
             Long id, String productName, String category, Long price, Long quantity, String status, LocalDateTime createdAt
             , Long adminId, String adminName, String adminEmail
             , SearchReviewSummaryResponse reviewSummary, List<SearchReviewResponse> recentReview
     ) {
-        SearchProductResponse response = new SearchProductResponse();
+        SearchProductDetailResponse response = new SearchProductDetailResponse();
         response.id = id;
         response.productName = productName;
         response.category = category;
