@@ -22,6 +22,7 @@ public class DashboardController {
 
     //위젯 데이터
     @GetMapping("/widgets")
+    @LoginSessionCheck
     public ResponseEntity<DataResponse<SearchWidgetsResponse>> getWidgets() {
         return ResponseEntity.status(HttpStatus.OK).body(DataResponse.success(HttpStatus.OK.name(),
                 dashboardService.getWidgets()));
@@ -30,9 +31,7 @@ public class DashboardController {
     //최근 주문 목록
     @GetMapping("/recent")
     @LoginSessionCheck
-    public ResponseEntity<DataResponse<List<SearchRecentListResponse>>> getRecentOrders(
-
-    ) {
+    public ResponseEntity<DataResponse<List<SearchRecentListResponse>>> getRecentOrders() {
         return ResponseEntity.status(HttpStatus.OK).body(DataResponse.success(HttpStatus.OK.name(),
                 dashboardService.getRecentList()));
     }

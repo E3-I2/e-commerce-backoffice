@@ -1,18 +1,22 @@
 package e3i2.ecommerce_backoffice.domain.dashboard.service;
 
-import e3i2.ecommerce_backoffice.domain.customer.repository.CustomerRepository;
+import e3i2.ecommerce_backoffice.domain.customer.entity.Customer;
 import e3i2.ecommerce_backoffice.domain.dashboard.dto.SearchRecentListResponse;
 import e3i2.ecommerce_backoffice.domain.dashboard.dto.SearchWidgetsResponse;
+import e3i2.ecommerce_backoffice.domain.order.entity.Ordering;
 import e3i2.ecommerce_backoffice.domain.order.entity.OrderingStatus;
 import e3i2.ecommerce_backoffice.domain.order.repository.OrderingRepository;
-import e3i2.ecommerce_backoffice.domain.order.repository.OrderingSeqRepository;
+import e3i2.ecommerce_backoffice.domain.product.entity.Product;
 import e3i2.ecommerce_backoffice.domain.product.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,9 +24,8 @@ import java.util.List;
 public class DashboardService {
     private final OrderingRepository orderingRepository;
     private final ProductRepository productRepository;
-    private final OrderingSeqRepository orderingSeqRepository;
-    private final CustomerRepository customerRepository;
 
+    @Transactional
     public SearchWidgetsResponse getWidgets() {
         // 오늘 날짜 범위
         LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
@@ -52,7 +55,34 @@ public class DashboardService {
         );
     }
 
+    @Transactional
     public List<SearchRecentListResponse> getRecentList() {
-        return null;
+
+        List<Ordering> orders = orderingRepository.findRecentOrders(
+                PageRequest.of(0, 10)
+        );
+
+        List<SearchRecentListResponse> responses = new ArrayList<>();
+
+        for (Ordering order : orders) {
+            Customer customer = order.getCustomer();
+            Product product = order.getProduct();
+            SearchRecentListResponse response = SearchRecentListResponse.register(
+                    order.getOrderId(),
+                    order.getOrderNo(),
+                    customer.getCustomerId(),
+                    customer.getCustomerName(),
+                    customer.getEmail(),
+                    product.getProductName(),
+                    order.getOrderQuantity(),
+                    order.getOrderTotalPrice(),
+                    order.getCreatedAt(),
+                    order.getOrderStatus()
+            );
+            responses.add(response);
+        }
+
+        return responses;
     }
+
 }

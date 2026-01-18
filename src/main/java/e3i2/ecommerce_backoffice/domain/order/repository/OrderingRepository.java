@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public interface OrderingRepository extends JpaRepository<Ordering, Long> {
@@ -53,4 +54,13 @@ public interface OrderingRepository extends JpaRepository<Ordering, Long> {
 
     // 주문 상태별 개수
     long countByOrderStatusAndDeletedFalse(OrderingStatus status);
+
+    @Query("""
+        select o
+        from Ordering o
+        join fetch o.customer c
+        join fetch o.product p
+        order by o.createdAt desc
+    """)
+    List<Ordering> findRecentOrders(Pageable pageable);
 }
