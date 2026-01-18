@@ -56,7 +56,7 @@ public class ReviewDataInitializer implements ApplicationRunner {
             Customer customer = customers.get(new Random().nextInt(customers.size()));
             Product product = products.get(new Random().nextInt(products.size()));
             String content = "테스트 리뷰";
-            Integer rating = new Random().nextInt(5);
+            Integer rating = new Random().nextInt(1, 5);
 
             Review review = Review.register(
                 content,
