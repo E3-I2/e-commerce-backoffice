@@ -28,4 +28,14 @@ public interface OrderingRepository extends JpaRepository<Ordering, Long> {
     );
 
     Optional<Ordering> findByOrderIdAndDeletedFalse(Long orderId);
+
+    @Query("""
+           SELECT count(o.orderId)
+           FROM Ordering o
+           WHERE FUNCTION('DATE', o.createdAt) = CURRENT_DATE
+           AND o.deleted = false
+           """)
+    Long countByOrderQuantityLower5DeletedFalse();
+
+    Long countByDeletedFalse();
 }
