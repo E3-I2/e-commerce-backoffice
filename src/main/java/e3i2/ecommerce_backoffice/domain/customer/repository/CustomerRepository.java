@@ -15,11 +15,10 @@ import java.util.Optional;
 
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
     @Query("SELECT c FROM Customer c WHERE " +
-           "(:customerName IS NULL OR (LOWER(c.customerName) LIKE CONCAT( '%', LOWER(:customerName) , '%'))) AND " +
-           "(:email IS NULL OR (LOWER(c.email) LIKE CONCAT( '%', LOWER(:email) , '%'))) AND " +
+           "(:search IS NULL OR (LOWER(c.customerName) LIKE CONCAT( '%', LOWER(:search) , '%') OR LOWER(c.email) LIKE CONCAT( '%', LOWER(:search) , '%'))) AND " +
            "(:status IS NULL OR c.customerStatus = :status) AND " +
            "c.deleted = false")
-    Page<Customer> findAllByFilters(@Param("customerName") String customerName, @Param("email") String email, @Param("status") CustomerStatus status, Pageable pageable);
+    Page<Customer> findAllByFilters(@Param("search") String search, @Param("status") CustomerStatus status, Pageable pageable);
 
     Optional<Customer> findByCustomerIdAndDeletedFalse(Long customerId);
 
