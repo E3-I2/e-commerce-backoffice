@@ -82,8 +82,6 @@ ecommerce_backoffice
 - [x] 각 Entity 내부 delete(), restore() 메서드로 제어
 
 ## Branch 전략
-
-
 <details>
 <summary>Dev, Stage, Prod </summary>
 <div markdown="1">
@@ -190,6 +188,7 @@ ecommerce_backoffice
 ### 4. 관리자 승인
 - **URL**: `/api/admins/{adminId}/accept`
 - **Method**: `PUT`
+- **Parameter** `adminId`
 - **Response**:
 ```json
 {
@@ -214,6 +213,7 @@ ecommerce_backoffice
 ### 5. 관리자 거부
 - **URL**: `/api/admins/{adminId}/deny`
 - **Method**: `PUT`
+- **Parameter** `adminId`
 - **Request Body**:
 ```json
 {
@@ -296,6 +296,7 @@ ecommerce_backoffice
 ### 7. 관리자 상세 조회
 - **URL**: `/api/admins/{adminId}`
 - **Method**: `GET`
+- **Parameter** `adminId`
 - **Response**:
 ```json
 {
@@ -319,6 +320,7 @@ ecommerce_backoffice
 ### 8. 관리자 수정
 - **URL**: `/api/admins/{adminId}`
 - **Method**: `PUT`
+- **Parameter** `adminId`
 - **Request Body**:
 ```json
 {
@@ -351,6 +353,7 @@ ecommerce_backoffice
 ### 9. 관리자 삭제
 - **URL**: `/api/admins/{adminId}`
 - **Method**: `DELETE`
+- **Parameter** `adminId`
 - **Response**:
 ```json
 {
@@ -363,6 +366,7 @@ ecommerce_backoffice
 ### 10. 관리자 역할 변경
 - **URL**: `/api/admins/{adminId}/role`
 - **Method**: `PUT`
+- **Parameter** `adminId`
 - **Description**: SUPER_ADMIN 만 역할 변경이 가능
 - **Request Body**:
 ```json
@@ -392,6 +396,7 @@ ecommerce_backoffice
 ### 11. 관리자 상태 변경
 - **URL**: `/api/admins/{adminId}/status`
 - **Method**: `PUT`
+- **Parameter** `adminId`
 - **Description**: SUPER_ADMIN 만 상태 변경 가능
 - **Request Body**:
 ```json
@@ -569,9 +574,9 @@ ecommerce_backoffice
 ```
 
 ### 3. 상품 개별 조회
-- **URL**: `/api/products/{product_id}`
+- **URL**: `/api/products/{productId}`
 - **Method**: `GET`
-- **Parameter** `product_id`
+- **Parameter** `productId`
 - **Response**:
 ```json
 {
@@ -640,8 +645,9 @@ ecommerce_backoffice
 ```
 
 ### 4. 상품 정보 수정
-- **URL**: `/api/products/{product_id}`
+- **URL**: `/api/products/{productId}`
 - **Method**: `PUT`
+- **Parameter** `productId`
 - **Request Body**:
 ```json
 {
@@ -668,8 +674,9 @@ ecommerce_backoffice
 ```
 
 ### 5. 상품 정보 수량 수정
-- **URL**: `/api/products/{product_id}/quantity`
+- **URL**: `/api/products/{productId}/quantity`
 - **Method**: `PUT`
+- **Parameter** `productId`
 - **Request Body**:
 ```json
 {
@@ -694,8 +701,9 @@ ecommerce_backoffice
 ```
 
 ### 6. 상품 정보 상태 수정
-- **URL**: `/api/products/{product_id}/status`
+- **URL**: `/api/products/{productId}/status`
 - **Method**: `PUT`
+- **Parameter** `productId`
 - **Request Body**:
 ```json
 {
@@ -720,8 +728,9 @@ ecommerce_backoffice
 ```
 
 ### 7. 상품 정보 삭제
-- **URL**: `/api/products/{product_id}`
+- **URL**: `/api/products/{productId}`
 - **Method**: `DELETE`
+- **Parameter** `productId`
 - **Response**:
 ```json
 {
@@ -787,6 +796,7 @@ ecommerce_backoffice
 ### 2. 고객 상세 조회
 - **URL**: `/api/customers/{customerId}`
 - **Method**: `GET`
+- **Parameter** `customerId`
 - **Response**:
 ```json
 {
@@ -808,6 +818,7 @@ ecommerce_backoffice
 ### 3. 고객 정보 수정
 - **URL**: `/api/customers/{customerId}/info`
 - **Method**: `PATCH`
+- **Parameter** `customerId`
 - **Request Body**:
 ```json
 {
@@ -837,6 +848,8 @@ ecommerce_backoffice
 ### 4. 고객 상태 변경
 - **URL**: `/api/customers/{customerId}/status`
 - **Method**: `PATCH`
+- **Parameter** `customerId`
+
 - **Request Body**:
 ```json
 {
@@ -864,6 +877,7 @@ ecommerce_backoffice
 ### 5. 고객 삭제
 - **URL**: `/api/customers/{customerId}`
 - **Method**: `DELETE`
+- **Parameter** `customerId`
 - **Response**:
 ```json
 {
@@ -961,6 +975,7 @@ ecommerce_backoffice
 ### 3. 주문 상세 조회
 - **URL**: `/api/orders/{orderId}`
 - **Method**: `GET`
+- **Parameter** `orderId`
 - **Response**:
 ```json
 {
@@ -987,6 +1002,7 @@ ecommerce_backoffice
 ### 4. 주문 상태 수정
 - **URL**: `/api/orders/{orderId}/status`
 - **Method**: `PUT`
+- **Parameter** `orderId`
 - **Request Body**:
 ```json
 {
@@ -1017,6 +1033,7 @@ ecommerce_backoffice
 ### 5. 주문 취소
 - **URL**: `/api/orders/{orderId}/cancel`
 - **Method**: `PUT`
+- **Parameter** `orderId`
 - **Request Body**:
 ```json
 {
@@ -1107,6 +1124,7 @@ ecommerce_backoffice
 ### 2. 리뷰 상세 조회
 - **URL**: `/api/reviews/{reviewId}`
 - **Method**: `GET`
+- **Parameter** `reviewId`
 - **Response**:
 ```json
 {
@@ -1130,6 +1148,8 @@ ecommerce_backoffice
 ### 3. 리뷰 삭제
 - **URL**: `/api/reviews/{reviewId}`
 - **Method**: `DELETE`
+- **Parameter** `reviewId`
+
 - **Response**:
 ```json
 {
