@@ -4,6 +4,20 @@
 - 팀원 : 김대훈, 나은총, 이준연, 이한비
 - 개발 기간 : 2026년 1월 13일 ~ 2026년 1월 20일
 
+## 목차
+1. [프로젝트 요구사항](#프로젝트-요구사항)
+2. [패키지 구조](#패키지-구조)
+3. [삭제 전략](#삭제-전략)
+4. [Branch 전략](#branch-전략)
+5. [API 명세서](#api-명세서)
+    - [관리자](#1-관리자-회원가입)
+    - [상품](#1-상품-추가)
+    - [고객](#1-고객-리스트-조회)
+    - [주문](#1-주문-생성)
+    - [리뷰](#1-리뷰-리스트-조회)
+    - [대시보드](#1-대시보드-통계)
+6. [ERD 및 FlowChart](#erd-flowchart)
+
 ## 프로젝트 요구사항
 - 고객, 상품, 주문 정보를 **체계적으로 관리**할 수 있는 기능
 - 상품 리뷰를 **조회하고 관리**할 수 있으며, **상품별 평점과 통계**를 제공하는 기능
@@ -1211,6 +1225,24 @@ ecommerce_backoffice
 </div>
 </details>
 
-## ERD
+## ERD, FlowChart
+
+<details>
+<summary> ERD </summary>
+<div markdown="1">
+
+여기에 ERD
+
+</div>
+</details>
+
+<details>
+<summary> FlowChart </summary>
+<div markdown="1">
+
+여기에 FlowChart
+
+</div>
+</details>
 
 
