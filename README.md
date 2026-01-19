@@ -126,8 +126,8 @@ ecommerce_backoffice
 ## API 명세서
 - 공통 사항
   - API 헤더는 공통적으로 Content-Type: application/json를 사용
-  - 인증이 필요한 API는 로그인 필요(세션)
-    - 로그인 하지않고 해당 API 접속 시 401 UnAuthorized
+  - 인증이 필요한 API는 로그인 필요(세션) - 관리자 회원 가입 외 전 API 적용
+    - 로그인 하지않고 해당 API 접근 시 `401 UnAuthorized`
 <details>
 <summary> 관리자 </summary>
 <div markdown="1">
@@ -164,6 +164,13 @@ ecommerce_backoffice
   "success": true
 }
 ```
+- **Response Code**
+`201 Created`
+
+- **ERROR** <br>
+  - 필수 값 누락한 경우: `400 Bad Request` 
+  - 이미 존재하는 이메일인 경우: `409 Conflict`
+
 
 ### 2. 관리자 로그인
 - **URL**: `/api/admins/login`
@@ -193,11 +200,20 @@ ecommerce_backoffice
   "success": true
 }
 ```
+- **Response Code**
+  `200 OK`
+
+- **ERROR** <br>
+    - 잘못된 입력일 경우: 400 `Bad Reqeuest`
+    - 관리자 상태가 ACT 상태가 아닌 경우: `403 Forbidden`
+    - 정상적인 관리자 계정이 아닌 경우: `403 Forbidden`
 
 ### 3. 관리자 로그아웃
 - **URL**: `/api/admins/logout`
 - **Method**: `POST`
 - **Response**:
+- **Response Code**
+  `200 OK`
 
 ### 4. 관리자 승인
 - **URL**: `/api/admins/{adminId}/accept`
@@ -223,6 +239,13 @@ ecommerce_backoffice
   "success": true
 }
 ```
+- **Response Code**
+  `200 OK`
+
+- **ERROR** <br>
+    - 잘못된 입력일 경우: 400 `Bad Reqeuest`
+    - 슈퍼 관리자가 아닌 경우: `403 Forbidden`
+    - 해당 관리자를 찾을 수 없는 경우: `404 Not Found`
 
 ### 5. 관리자 거부
 - **URL**: `/api/admins/{adminId}/deny`
@@ -254,6 +277,12 @@ ecommerce_backoffice
   "success": true
 }
 ```
+- **Response Code**
+  `200 OK`
+
+- **ERROR** <br>
+    - 슈퍼 관리자가 아닌 경우: `403 Forbidden`
+    - 해당 관리자를 찾을 수 없는 경우: `404 Not Found`
 
 ### 6. 관리자 리스트 조회
 - **URL**: `/api/admins`
@@ -306,6 +335,11 @@ ecommerce_backoffice
   }
 }
 ```
+- **Response Code**
+  `200 OK`
+
+- **ERROR** <br>
+    - 슈퍼 관리자가 아닌 경우: `403 Forbidden`
 
 ### 7. 관리자 상세 조회
 - **URL**: `/api/admins/{adminId}`
@@ -330,6 +364,12 @@ ecommerce_backoffice
   }
 }
 ```
+- **Response Code**
+  `200 OK`
+
+- **ERROR** <br>
+    - 슈퍼 관리자가 아닌 경우: `403 Forbidden`
+    - 해당 관리자를 찾을 수 없는 경우: `404 Not Found`
 
 ### 8. 관리자 수정
 - **URL**: `/api/admins/{adminId}`
@@ -363,6 +403,14 @@ ecommerce_backoffice
   }
 }
 ```
+- **Response Code**
+  `200 OK`
+
+- **ERROR** <br>
+    - 입력값 검증에 실패했을 경우: `400 Bad Request`
+    - 슈퍼 관리자가 아닌 경우: `403 Forbidden`
+    - 해당 관리자를 찾을 수 없는 경우: `404 Not Found`
+    - 이미 등록된 이메일이 있을 경우 : `409 Conflict`
 
 ### 9. 관리자 삭제
 - **URL**: `/api/admins/{adminId}`
@@ -376,6 +424,13 @@ ecommerce_backoffice
   "message": "사용자가 삭제되었습니다"
 }
 ```
+- **Response Code**
+  `200 OK`
+
+- **ERROR** <br>
+    - 슈퍼 관리자가 아닌 경우, 삭제 대상 본인인 경우: `403 Forbidden`
+    - 해당 관리자를 찾을 수 없는 경우: `404 Not Found`
+    - 이미 등록된 이메일이 있을 경우 : `409 Conflict`
 
 ### 10. 관리자 역할 변경
 - **URL**: `/api/admins/{adminId}/role`
@@ -406,6 +461,12 @@ ecommerce_backoffice
   "success": true
 }
 ```
+- **Response Code**
+  `200 OK`
+
+- **ERROR** <br>
+    - 슈퍼 관리자가 아닌 경우: `403 Forbidden`
+    - 해당 관리자를 찾을 수 없는 경우: `404 Not Found`
 
 ### 11. 관리자 상태 변경
 - **URL**: `/api/admins/{adminId}/status`
@@ -436,6 +497,13 @@ ecommerce_backoffice
   "success": true
 }
 ```
+- **Response Code**
+  `200 OK`
+
+- **ERROR** <br>
+    - 슈퍼 관리자가 아닌 경우: `403 Forbidden`
+    - 해당 관리자를 찾을 수 없는 경우: `404 Not Found`
+
 
 ### 12. 내 프로필 조회
 - **URL**: `/api/admins/me`
@@ -458,6 +526,11 @@ ecommerce_backoffice
   "success": true
 }
 ```
+- **Response Code**
+  `200 OK`
+
+- **ERROR** <br>
+    - 해당 관리자를 찾을 수 없는 경우: `404 Not Found`
 
 ### 13. 내 프로필 수정
 - **URL**: `/api/admins/me/profile`
@@ -489,6 +562,13 @@ ecommerce_backoffice
   "success": true
 }
 ```
+- **Response Code**
+  `200 OK`
+
+- **ERROR** <br>
+    - 입력값 검증에 실패했을 경우: `400 Bad Request`
+    - 해당 관리자를 찾을 수 없는 경우: `404 Not Found`
+    - 이미 등록된 이메일이 있을 경우 : `409 Conflict`
 
 ### 14. 내 비밀번호 변경
 - **URL**: `/api/admins/me/password`
@@ -508,6 +588,14 @@ ecommerce_backoffice
   "success": true
 }
 ```
+- **Response Code**
+  `200 OK`
+
+- **ERROR** <br>
+    - 현재 PW가 일치하지 않는 경우, 새 PW와 기존 PW가 일치할 경우: `400 Bad Request`
+    - 슈퍼 관리자가 아닌 경우: `403 Forbidden`
+    - 해당 관리자를 찾을 수 없는 경우: `404 Not Found`
+    - 이미 등록된 이메일이 있을 경우 : `409 Conflict`
 
 </div>
 </details>
@@ -545,6 +633,12 @@ ecommerce_backoffice
   "success": true
 }
 ```
+- **Response Code**
+  `201 Created`
+
+- **ERROR** <br>
+    - 입력값 검증에 실패했을 경우: `400 Bad Request`
+    - 해당 상품을 찾을 수 없는 경우: `404 Not Found`
 
 ### 2. 상품 조회
 - **URL**: `/api/products`
@@ -586,6 +680,9 @@ ecommerce_backoffice
   }
 }
 ```
+- **Response Code**
+  `200 OK`
+
 
 ### 3. 상품 개별 조회
 - **URL**: `/api/products/{productId}`
@@ -657,6 +754,12 @@ ecommerce_backoffice
   }
 }
 ```
+- **Response Code**
+  `200 OK`
+
+- **ERROR** <br>
+    - 해당 상품을 찾을 수 없는 경우: `404 Not Found`
+
 
 ### 4. 상품 정보 수정
 - **URL**: `/api/products/{productId}`
@@ -686,6 +789,13 @@ ecommerce_backoffice
   "success": true
 }
 ```
+- **Response Code**
+  `200 OK`
+
+- **ERROR** <br>
+    - 입력값 검증에 실패했을 경우: `400 Bad Request`
+    - 해당 상품을 찾을 수 없는 경우: `404 Not Found`
+
 
 ### 5. 상품 정보 수량 수정
 - **URL**: `/api/products/{productId}/quantity`
@@ -713,6 +823,12 @@ ecommerce_backoffice
   "success": true
 }
 ```
+- **Response Code**
+  `200 OK`
+
+- **ERROR** <br>
+    - 입력값 검증에 실패했을 경우: `400 Bad Request`
+    - 해당 상품을 찾을 수 없는 경우: `404 Not Found`
 
 ### 6. 상품 정보 상태 수정
 - **URL**: `/api/products/{productId}/status`
@@ -740,6 +856,13 @@ ecommerce_backoffice
   "success": true
 }
 ```
+- **Response Code**
+  `200 OK`
+
+- **ERROR** <br>
+    - 입력값 검증에 실패했을 경우: `400 Bad Request`
+    - 해당 상품을 찾을 수 없는 경우: `404 Not Found`
+
 
 ### 7. 상품 정보 삭제
 - **URL**: `/api/products/{productId}`
@@ -753,6 +876,11 @@ ecommerce_backoffice
   "message": "상품이 삭제되었습니다"
 }
 ```
+- **Response Code**
+  `200 OK`
+
+- **ERROR** <br>
+    - 해당 상품을 찾을 수 없는 경우: `404 Not Found`
 
 </div>
 </details>
@@ -808,6 +936,8 @@ ecommerce_backoffice
   }
 }
 ```
+- **Response Code**
+  `200 OK`
 
 ### 2. 고객 상세 조회
 - **URL**: `/api/customers/{customerId}`
@@ -830,6 +960,12 @@ ecommerce_backoffice
   }
 }
 ```
+- **Response Code**
+  `200 OK`
+
+- **ERROR** <br>
+    - 해당 고객을 찾을 수 없는 경우: `404 Not Found`
+
 
 ### 3. 고객 정보 수정
 - **URL**: `/api/customers/{customerId}/info`
@@ -860,6 +996,13 @@ ecommerce_backoffice
   }
 }
 ```
+- **Response Code**
+  `200 OK`
+
+- **ERROR** <br>
+    - 입력값 검증에 실패했을 경우: `400 Bad Request`
+    - 해당 고객을 찾을 수 없는 경우: `404 Not Found`
+    - 이미 등록된 이메일이 있을 경우 : `409 Conflict`
 
 ### 4. 고객 상태 변경
 - **URL**: `/api/customers/{customerId}/status`
@@ -889,6 +1032,12 @@ ecommerce_backoffice
   }
 }
 ```
+- **Response Code**
+  `200 OK`
+
+- **ERROR** <br>
+    - 입력값 검증에 실패했을 경우: `400 Bad Request`
+    - 해당 고객을 찾을 수 없는 경우: `404 Not Found`
 
 ### 5. 고객 삭제
 - **URL**: `/api/customers/{customerId}`
@@ -902,6 +1051,12 @@ ecommerce_backoffice
   "message": "고객이 삭제 되었습니다"
 }
 ```
+- **Response Code**
+  `200 OK`
+
+- **ERROR** <br>
+    - 입력값 검증에 실패했을 경우: `400 Bad Request`
+    - 해당 고객을 찾을 수 없는 경우: `404 Not Found`
 
 </div>
 </details>
@@ -943,6 +1098,12 @@ ecommerce_backoffice
   }
 }
 ```
+- **Response Code**
+  `201 Created`
+
+- **ERROR** <br>
+    - 입력값 검증에 실패했을 경우: `400 Bad Request`
+    - 해당 관리자, 제품, 고객을 찾을 수 없는 경우: `404 Not Found`
 
 ### 2. 주문 리스트 통합 조회
 - **URL**: `/api/orders`
@@ -981,6 +1142,8 @@ ecommerce_backoffice
   }
 }
 ```
+- **Response Code**
+  `200 OK`
 
 ### 3. 주문 상세 조회
 - **URL**: `/api/orders/{orderId}`
@@ -1008,6 +1171,11 @@ ecommerce_backoffice
   }
 }
 ```
+- **Response Code**
+  `200 OK`
+
+- **ERROR** <br>
+  - 해당 주문을 찾을 수 없는 경우: `404 Not Found`
 
 ### 4. 주문 상태 수정
 - **URL**: `/api/orders/{orderId}/status`
@@ -1039,6 +1207,13 @@ ecommerce_backoffice
   }
 }
 ```
+- **Response Code**
+  `200 OK`
+
+- **ERROR** <br> 
+  - 허용되지 않은 상태 전이의 경우: `400 Bad Request`
+  - 배송완료 된 상태일 경우: `403 Forbidden`
+  - 해당 주문을 찾을 수 없는 경우: `404 Not Found`
 
 ### 5. 주문 취소
 - **URL**: `/api/orders/{orderId}/cancel`
@@ -1071,6 +1246,12 @@ ecommerce_backoffice
   }
 }
 ```
+- **Response Code**
+  `200 OK`
+
+- **ERROR** <br>
+    - 허용되지 않은 상태 전이의 경우: `400 Bad Request`
+    - 해당 주문을 찾을 수 없는 경우: `404 Not Found`
 
 </div>
 </details>
@@ -1130,6 +1311,8 @@ ecommerce_backoffice
   }
 }
 ```
+- **Response Code**
+  `200 OK`
 
 ### 2. 리뷰 상세 조회
 - **URL**: `/api/reviews/{reviewId}`
@@ -1154,6 +1337,11 @@ ecommerce_backoffice
   }
 }
 ```
+- **Response Code**
+  `200 OK`
+
+- **ERROR** <br>
+    - 해당 리뷰를 찾을 수 없는 경우: `404 Not Found`
 
 ### 3. 리뷰 삭제
 - **URL**: `/api/reviews/{reviewId}`
@@ -1167,6 +1355,11 @@ ecommerce_backoffice
   "message": "리뷰가 삭제 되었습니다"
 }
 ```
+- **Response Code**
+  `200 OK`
+
+- **ERROR** <br>
+    - 해당 리뷰를 찾을 수 없는 경우: `404 Not Found`
 
 </div>
 </details>
@@ -1221,6 +1414,8 @@ ecommerce_backoffice
   }
 }
 ```
+- **Response Code**
+  `200 OK`
 
 </div>
 </details>
