@@ -26,8 +26,8 @@ public class CustomerService {
 
     // 고객 리스트 조회
     @Transactional(readOnly = true)
-    public ItemsWithPagination<List<GetCustomerResponse>> findAll(String customerName, String email, Integer page, Integer limit, String sortBy, String sortOrder, CustomerStatus status) {
-        Page<Customer> customers = customerRepository.findAllByFilters(customerName, email, status, PageRequest.of(page - 1, limit, Sort.by(sortOrder.equals("desc") ? Sort.Direction.DESC : Sort.Direction.ASC, sortBy)));
+    public ItemsWithPagination<List<GetCustomerResponse>> findAll(String search, Integer page, Integer limit, String sortBy, String sortOrder, CustomerStatus status) {
+        Page<Customer> customers = customerRepository.findAllByFilters(search, status, PageRequest.of(page - 1, limit, Sort.by(sortOrder.equals("desc") ? Sort.Direction.DESC : Sort.Direction.ASC, sortBy)));
 
         List<GetCustomerResponse> items = customers.stream().map(customer -> new GetCustomerResponse(
                 customer.getCustomerId(),

@@ -64,7 +64,7 @@ public class ProductDataInitializer implements ApplicationRunner {
                     , productNameArr[i]
                     , categoriesArr[i]
                     , priceArr[i]
-                    , 5L
+                    , 10L
                     , ProductStatus.ON_SALE
             );
 

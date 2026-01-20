@@ -60,7 +60,7 @@ public class OrderDataInitializer implements ApplicationRunner {
         for (int i = 0; i < 5; i++) {
             Customer customer = customers.get(new Random().nextInt(customers.size()));
             Product product = products.get(new Random().nextInt(products.size()));
-            Long quantity = new Random().nextLong(1,5);
+            Long quantity = new Random().nextLong(1,2);
 
             OrderingSeq orderingSeq = orderingSeqRepository.findById().orElseGet(
                     () -> {

@@ -103,10 +103,9 @@ public class OrderingService {
 
     @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public ItemsWithPagination<List<SearchOrderingResponse>> searchAllOrdering(
-            String orderNo, String customerName, OrderingStatus orderStatus, Integer page, Integer limit, String sortBy, String sortOrder) {
+            String search, OrderingStatus orderStatus, Integer page, Integer limit, String sortBy, String sortOrder) {
         Page<Ordering> orders = orderingRepository.findOrders(
-                orderNo,
-                customerName,
+                search,
                 orderStatus,
                 PageRequest.of(page - 1,
                         limit,

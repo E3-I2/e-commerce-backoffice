@@ -35,8 +35,7 @@ public class OrderingController {
     @GetMapping
     @LoginSessionCheck
     public ResponseEntity<DataResponse<ItemsWithPagination<List<SearchOrderingResponse>>>> searchAllOrderResponse(
-            @RequestParam(required = false) String orderNo,
-            @RequestParam(required = false) String customerName,
+            @RequestParam(required = false) String search,
             @RequestParam(required = false) OrderingStatus orderStatus,
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer limit,
@@ -45,7 +44,7 @@ public class OrderingController {
 
     ) {
         return ResponseEntity.status(HttpStatus.OK).body(DataResponse.success(HttpStatus.OK.name(),
-                orderingService.searchAllOrdering(orderNo, customerName, orderStatus, page, limit, sortBy, sortOrder)));
+                orderingService.searchAllOrdering(search, orderStatus, page, limit, sortBy, sortOrder)));
     }
 
     @GetMapping("/{orderId}")
