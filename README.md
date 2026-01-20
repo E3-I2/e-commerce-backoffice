@@ -644,13 +644,13 @@ ecommerce_backoffice
 - **URL**: `/api/products`
 - **Method**: `GET`
 - **Query Parameters**:
-    - `productName`: 상품명    
+    - `search`: 상품명    
     - `category`: 카테고리 필터
     - `status`: 상태 필터
     - `page`: 페이지 번호 
     - `limit`: 페이지당 항목 수
     - `sortOrder` : 정렬 순서 (asc, desc)
-    - `sortBy` 
+    - `sortBy` : 정렬 기준 컬럼 (default 는 createdAt)
 - **Response**:
 ```json
 {
@@ -893,12 +893,12 @@ ecommerce_backoffice
 - **URL**: `/api/customers`
 - **Method**: `GET`
 - **Query Parameters**:
-    - `customerName`, `email`: 검색 키워드
+    - `search`: 검색 키워드 (고객명 또는 이메일)
     - `page`: 페이지 번호 (default: 1)
     - `limit`: 페이지당 항목 수 (default: 10)
     - `sortBy` : 정렬 기준 (adminName, email, createdAt 등...)
     - `sortOrder` : 정렬 순서 (asc, desc)
-    - `status`: 상태 필터 (ACT, IN_ACT, SUSOEND)
+    - `status`: 상태 필터 (ACT, IN_ACT, SUSPEND)
 - **Response**:
 ```json
 {
@@ -1109,7 +1109,12 @@ ecommerce_backoffice
 - **URL**: `/api/orders`
 - **Method**: `GET`
 - **Query Parameters**:
-    - `orderNo`, `orderStatus`, `customerName`: 검색 키워드
+  - `search`: 검색 키워드 (고객명 또는 주문번호)
+  - `orderStatus`: 주문 상태 필터
+  - `page`: 페이지 번호
+  - `limit`: 페이지당 항목 수
+  - `sortOrder` : 정렬 순서 (asc, desc)
+  - `sortBy` : 정렬 기준 컬럼 (default 는 createdAt)
 - **Response**:
 ```json
 {
@@ -1264,7 +1269,7 @@ ecommerce_backoffice
 - **URL**: `/api/reviews`
 - **Method**: `GET`
 - **Query Parameters**:
-    - `customerName`, `email`: 검색 키워드
+    - `search`: 검색 키워드 (고객 또는 상품명)
     - `page`: 페이지 번호 (default: 1)
     - `limit`: 페이지당 항목 수 (default: 10)
     - `sortBy` : 정렬 기준 (adminName, email, createdAt 등...)
