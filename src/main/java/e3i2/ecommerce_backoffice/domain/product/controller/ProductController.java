@@ -37,7 +37,7 @@ public class ProductController {
     @GetMapping
     @LoginSessionCheck
     public ResponseEntity<DataResponse<ItemsWithPagination<List<SearchProductResponse>>>> searchProducts(
-            @RequestParam(required = false) String productName
+            @RequestParam(required = false) String search
             , @RequestParam(defaultValue = "1") Integer page
             , @RequestParam(defaultValue = "10") Integer limit
             , @RequestParam(defaultValue = "createdAt") String sortBy
@@ -45,7 +45,7 @@ public class ProductController {
             , @RequestParam(required = false) ProductCategory category
             , @RequestParam(required = false) ProductStatus status
             ) {
-        return ResponseEntity.status(HttpStatus.OK).body(DataResponse.success(HttpStatus.OK.name(), productService.searchAllProduct(productName, category, status, page, limit, sortBy, sortOrder)));
+        return ResponseEntity.status(HttpStatus.OK).body(DataResponse.success(HttpStatus.OK.name(), productService.searchAllProduct(search, category, status, page, limit, sortBy, sortOrder)));
     }
 
     @GetMapping("/{productId}")

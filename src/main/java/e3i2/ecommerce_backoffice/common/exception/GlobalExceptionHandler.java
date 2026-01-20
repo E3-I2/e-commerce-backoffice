@@ -21,6 +21,12 @@ public class GlobalExceptionHandler<T> {
         return ResponseEntity.status(e.getHttpStatus()).body(MessageResponse.fail(e.getHttpStatus().name(), e.getMessage()));
     }
 
+    @ExceptionHandler(value = IllegalArgumentException.class)
+    public ResponseEntity<MessageResponse<T>> IllegalArgumentExceptionHandler(IllegalArgumentException e) {
+        log.error("요청 값 유효성 에러 발생 : ", e);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(MessageResponse.fail(HttpStatus.BAD_REQUEST.name(), MSG_NOT_VALID_VALUE));
+    }
+
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<MessageResponse<T>> MethodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e) {
         log.error("데이터 유효성 에러 발생 : ", e);
