@@ -156,7 +156,7 @@ public class AdminService {
 
     @Transactional(readOnly = true)
     public ItemsWithPagination<List<SearchAdminDetailResponse>> getAdminList (
-            String keyword, int page, int limit, String sortBy, String sortOrder, AdminRole role, AdminStatus status, SessionAdmin loginAdmin
+            String search, int page, int limit, String sortBy, String sortOrder, AdminRole role, AdminStatus status, SessionAdmin loginAdmin
     ) {
         if (loginAdmin.getRole() != AdminRole.SUPER_ADMIN) {
             throw new ServiceErrorException(ERR_ONLY_SUPER_ADMIN_ACCESS);
@@ -169,7 +169,7 @@ public class AdminService {
         Pageable pageable = PageRequest.of(page - 1, limit, sort);
 
         Page<Admin> admins = adminRepository.findAdmins(
-                (keyword == null || keyword.isBlank()) ? null : keyword,
+                (search == null || search.isBlank()) ? null : search,
                 role,
                 status,
                 pageable

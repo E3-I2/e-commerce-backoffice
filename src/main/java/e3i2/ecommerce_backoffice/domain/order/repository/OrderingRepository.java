@@ -16,15 +16,17 @@ public interface OrderingRepository extends JpaRepository<Ordering, Long> {
     @Query("""
         SELECT o
         FROM Ordering o
-        WHERE (LOWER(o.orderNo) LIKE CONCAT('%', LOWER(:orderNo), '%') OR :orderNo IS NULL)
-        AND (LOWER(o.customer.customerName) LIKE CONCAT('%', LOWER(:customerName), '%') OR :customerName IS NULL)
-        AND (o.orderStatus = :orderStatus OR :orderStatus IS NULL)\
-        AND (o.deleted = false)
+        JOIN FETCH o.customer c
+        JOIN FETCH o.product p
+        JOIN FETCH o.admin a
+        WHERE (:search IS NULL OR
+               (LOWER(o.orderNo) LIKE CONCAT('%', LOWER(:search), '%') OR
+                LOWER(c.customerName) LIKE CONCAT('%', LOWER(:search), '%')))
+        AND (:orderStatus IS NULL OR o.orderStatus = :orderStatus)
+        AND o.deleted = false
         """)
-
     Page<Ordering> findOrders(
-            @Param("orderNo") String orderNo,
-            @Param("customerName") String customerName,
+            @Param("search") String search,
             @Param("orderStatus") OrderingStatus orderStatus,
             Pageable pageable
     );

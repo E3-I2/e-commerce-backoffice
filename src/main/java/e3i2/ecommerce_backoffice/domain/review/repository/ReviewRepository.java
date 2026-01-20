@@ -43,7 +43,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             , (SELECT count(r.reviewId) FROM Review r WHERE r.rating = 2 and r.product = :product AND r.deleted = false) AS twoStarCount
             , (SELECT count(r.reviewId) FROM Review r WHERE r.rating = 1 and r.product = :product AND r.deleted = false) AS oneStarCount
             FROM Review r
-            INNER JOIN r.product
             WHERE r.product = :product
               AND r.deleted = false
            """)

@@ -108,7 +108,7 @@ public class AdminController {
     @GetMapping
     @LoginSessionCheck
     public ResponseEntity<DataResponse<ItemsWithPagination<List<SearchAdminDetailResponse>>>> getAdminList(
-            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String search,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "createdAt") String sortBy,
@@ -118,7 +118,7 @@ public class AdminController {
             @SessionAttribute(ADMIN_SESSION_NAME) SessionAdmin loginAdmin
     ) {
         ItemsWithPagination<List<SearchAdminDetailResponse>> response = adminService.getAdminList(
-                keyword, page, size, sortBy, sortOrder, role, status, loginAdmin
+                search, page, size, sortBy, sortOrder, role, status, loginAdmin
         );
 
         return ResponseEntity.status(HttpStatus.OK).body(DataResponse.success("OK", response));

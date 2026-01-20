@@ -73,8 +73,8 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
-    public ItemsWithPagination<List<SearchProductResponse>> searchAllProduct(String productName, ProductCategory category, ProductStatus status, Integer page, Integer limit, String sortBy, String sortOrder) {
-        Page<Product> products = productRepository.findProducts(productName, category, status, PageRequest.of(page - 1, limit, Sort.by(sortOrder.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy)));
+    public ItemsWithPagination<List<SearchProductResponse>> searchAllProduct(String search, ProductCategory category, ProductStatus status, Integer page, Integer limit, String sortBy, String sortOrder) {
+        Page<Product> products = productRepository.findProducts(search, category, status, PageRequest.of(page - 1, limit, Sort.by(sortOrder.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, sortBy)));
 
         List<SearchProductResponse> items = products.stream().map(product -> SearchProductResponse.register(
                 product.getProductId()

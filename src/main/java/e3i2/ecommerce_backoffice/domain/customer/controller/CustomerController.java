@@ -25,15 +25,14 @@ public class CustomerController {
     @GetMapping("/api/customers")
     @LoginSessionCheck
     public ResponseEntity<DataResponse<ItemsWithPagination<List<GetCustomerResponse>>>> getAll(
-            @RequestParam(required = false) String customerName,
-            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String search,
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer limit,
             @RequestParam(defaultValue = "createdAt") String sortBy,
             @RequestParam(defaultValue = "desc") String sortOrder,
             @RequestParam(required = false) CustomerStatus status
     ) {
-        return ResponseEntity.status(HttpStatus.OK).body(DataResponse.success(HttpStatus.OK.name(), customerService.findAll(customerName, email, page, limit, sortBy, sortOrder, status)));
+        return ResponseEntity.status(HttpStatus.OK).body(DataResponse.success(HttpStatus.OK.name(), customerService.findAll(search, page, limit, sortBy, sortOrder, status)));
     }
 
     @GetMapping("/api/customers/{customerId}")
